@@ -7,7 +7,7 @@ export default class Api {
 		this.app = express()
 	}
 
-	serve(port: number | string) {
+	run(port: number | string) {
 		this.app.get('/', (_, res) => {
 			res.json({
 				message: 'Api OK!',

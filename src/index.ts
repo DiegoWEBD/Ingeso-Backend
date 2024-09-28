@@ -5,4 +5,4 @@ dotenv.config()
 
 const api: Api = new Api()
 
-api.serve(process.env.PORT || 8080)
+api.run(process.env.PORT || 8080)
