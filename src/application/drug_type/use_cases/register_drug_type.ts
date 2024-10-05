@@ -7,10 +7,13 @@ export const makeRegisterDrugType = (
 	return async (dtype: string, description: string): Promise<DrugType> => {
 		const drugType = await drugTypeRepository.findByType(dtype)
 
-		if (drugType === undefined) {
+		if (drugType !== undefined) {
 			throw new Error(`El tipo de fármaco '${dtype}' ya está registrado.`)
 		}
 
-		return new DrugType(dtype, description)
+		const newDrugType = new DrugType(dtype, description)
+		await drugTypeRepository.add(newDrugType)
+
+		return newDrugType
 	}
 }
