@@ -13,3 +13,5 @@ export default class DrugTypeServices implements IDrugTypeServices {
 	registerDrugType: (dtype: string, description: string) => Promise<DrugType> =
 		makeRegisterDrugType(this.drugTypeRepository)
 }
+
+// Factory functions javascript
