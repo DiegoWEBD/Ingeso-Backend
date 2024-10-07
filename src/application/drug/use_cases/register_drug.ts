@@ -55,7 +55,6 @@ export const makeRegisterDrug = (
 		}
 
 		const reactionDrugs: Drug[] = []
-		const adverseReactions: AdverseReaction[] = []
 
 		for (let reactionDrugName of adverseReactionNames) {
 			const drug = await drugRepository.findByName(reactionDrugName)
@@ -65,5 +64,21 @@ export const makeRegisterDrug = (
 			}
 			reactionDrugs.push(drug)
 		}
+
+		const newDrug = new Drug(
+			name,
+			description,
+			drugTypes,
+			[],
+			administrationProcedures
+		)
+
+		for (let drug of reactionDrugs) {
+			const adverseReaction = new AdverseReaction(newDrug, drug)
+			drug.addAdverseReaction(adverseReaction)
+			newDrug.addAdverseReaction(adverseReaction)
+		}
+
+		return newDrug
 	}
 }

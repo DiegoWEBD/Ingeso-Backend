@@ -7,7 +7,7 @@ export default class Drug {
 		private description: string,
 		private drugTypes: Array<DrugType>,
 		private adverseReactions: Array<AdverseReaction>,
-		private administrationProcedure: Array<AdministrationProcedure>
+		private administrationProcedures: Array<AdministrationProcedure>
 	) {}
 
 	getName(): string {
@@ -27,6 +27,10 @@ export default class Drug {
 	}
 
 	getAdministrationProcedures(): Array<AdministrationProcedure> {
-		return this.administrationProcedure
+		return this.administrationProcedures
+	}
+
+	addAdverseReaction(adverseReaction: AdverseReaction) {
+		this.adverseReactions.push(adverseReaction)
 	}
 }
