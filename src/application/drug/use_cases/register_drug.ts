@@ -79,6 +79,8 @@ export const makeRegisterDrug = (
 			newDrug.addAdverseReaction(adverseReaction)
 		}
 
+		await drugRepository.add(newDrug)
+
 		return newDrug
 	}
 }
