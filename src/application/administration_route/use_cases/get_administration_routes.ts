@@ -4,6 +4,6 @@ import AdministrationRouteRepository from '../../../domain/administration_route/
 export const makeGetAdministrationRoutes = (
 	administrationRouteRepository: AdministrationRouteRepository
 ) => {
-	return async (): Promise<AdministrationRoute[]> =>
+	return async (): Promise<Array<AdministrationRoute>> =>
 		await administrationRouteRepository.getAll()
 }
