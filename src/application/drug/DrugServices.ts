@@ -17,6 +17,7 @@ export default class DrugServices implements IDrugServices {
 	) {}
 
 	getDrugInformation = makeGetDrugInformation(this.drugRepository)
+	getDrugsNames = makeGetDrugsNames(this.drugRepository)
 	registerDrug = makeRegisterDrug(
 		this.drugRepository,
 		this.drugTypeRepository,
@@ -33,5 +34,4 @@ export default class DrugServices implements IDrugServices {
 		this.drugRepository,
 		this.administrationRouteRepository
 	)
-	getDrugsNames = makeGetDrugsNames(this.drugRepository)
 }
