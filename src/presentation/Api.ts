@@ -1,10 +1,14 @@
 import express, { Express } from 'express'
+import ApplicationServices from '../application/ApplicationServices'
+import { makeDrugRouter } from './drug/drug_router'
 
 export default class Api {
 	private app: Express
+	private applicationServices: ApplicationServices
 
-	constructor() {
+	constructor(applicationServices: ApplicationServices) {
 		this.app = express()
+		this.applicationServices = applicationServices
 	}
 
 	run(port: number | string) {
@@ -13,6 +17,11 @@ export default class Api {
 				message: 'Api OK!',
 			})
 		})
+
+		this.app.use(
+			'/drugs',
+			makeDrugRouter(this.applicationServices.getDrugServices())
+		)
 
 		this.app.listen(port, () => {
 			console.log(`Server running at http://localhost:${port}`)
