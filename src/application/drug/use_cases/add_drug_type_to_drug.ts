@@ -1,6 +1,7 @@
 import Drug from '../../../domain/drug/Drug'
 import DrugRepository from '../../../domain/drug/DrugRepository'
 import DrugTypeRepository from '../../../domain/drug_type/DrugTypeRepository'
+import AlreadyExistsError from '../../errors/already_exists'
 import NotFoundError from '../../errors/not_found'
 
 export const makeAddDrugTypeToDrug = (
@@ -20,6 +21,16 @@ export const makeAddDrugTypeToDrug = (
 
 		if (drug === undefined) {
 			throw new NotFoundError(`El fármaco '${drugName}' no está registrado.`)
+		}
+
+		const drugTypes = drug.getDrugTypes()
+
+		for (let drugType of drugTypes) {
+			if (drugType.getDtype() === dtype) {
+				throw new AlreadyExistsError(
+					`La relación entre el fármaco '${drugName}' y el tipo de fármaco '${dtype}' ya está registrada.`
+				)
+			}
 		}
 
 		drug.getDrugTypes().push(drugType)
