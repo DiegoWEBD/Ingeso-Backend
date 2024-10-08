@@ -10,6 +10,7 @@ export const makeDrugRouter = (drugServices: IDrugServices): Router => {
 	const drugController = makeController(requestHandler)
 
 	router.all('/', drugController)
+	router.all('/:name', drugController)
 
 	return router
 }
