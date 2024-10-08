@@ -5,6 +5,8 @@ import Drug from '../../../domain/drug/Drug'
 import DrugRepository from '../../../domain/drug/DrugRepository'
 import DrugType from '../../../domain/drug_type/DrugType'
 import DrugTypeRepository from '../../../domain/drug_type/DrugTypeRepository'
+import AlreadyExistsError from '../../errors/already_exists'
+import NotFoundError from '../../errors/not_found'
 
 export const makeRegisterDrug = (
 	drugRepository: DrugRepository,
@@ -21,7 +23,7 @@ export const makeRegisterDrug = (
 		const existingDrug = await drugRepository.findByName(name)
 
 		if (existingDrug !== undefined) {
-			throw new Error(`El fármaco ${name} ya está registrado.`)
+			throw new AlreadyExistsError(`El fármaco ${name} ya está registrado.`)
 		}
 
 		const drugTypes: DrugType[] = []
@@ -30,7 +32,9 @@ export const makeRegisterDrug = (
 			const drugType = await drugTypeRepository.findByType(dtype)
 
 			if (drugType === undefined) {
-				throw new Error(`El tipo de fármaco '${dtype} no está registrado.'`)
+				throw new NotFoundError(
+					`El tipo de fármaco '${dtype} no está registrado.'`
+				)
 			}
 			drugTypes.push(drugType)
 		}
@@ -43,7 +47,9 @@ export const makeRegisterDrug = (
 				await administrationRouteRepository.findByRoute(route)
 
 			if (administrationRoute === undefined) {
-				throw new Error(`La vía de administración ${route} no está registrada.`)
+				throw new NotFoundError(
+					`La vía de administración ${route} no está registrada.`
+				)
 			}
 
 			const procedure = routeProcedure[1]
@@ -60,7 +66,9 @@ export const makeRegisterDrug = (
 			const drug = await drugRepository.findByName(reactionDrugName)
 
 			if (drug === undefined) {
-				throw new Error(`El fármaco ${reactionDrugName} no está registrado.`)
+				throw new NotFoundError(
+					`El fármaco ${reactionDrugName} no está registrado.`
+				)
 			}
 			reactionDrugs.push(drug)
 		}
