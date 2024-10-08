@@ -7,7 +7,7 @@ import { makeRegisterDrugType } from './use_cases/register_drug_type'
 export default class DrugTypeServices implements IDrugTypeServices {
 	constructor(private drugTypeRepository: DrugTypeRepository) {}
 
-	getDrugTypes: () => Promise<DrugType[]> = makeGetDrugTypes(
+	getDrugTypes: () => Promise<Array<DrugType>> = makeGetDrugTypes(
 		this.drugTypeRepository
 	)
 	registerDrugType: (dtype: string, description: string) => Promise<DrugType> =
