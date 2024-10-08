@@ -4,6 +4,7 @@ import DrugTypeRepository from './domain/drug_type/DrugTypeRepository'
 import MemoryDrugTypeRepository from './infrastructure/drug_type/MemoryDrugTypeRepository'
 import IDrugTypeServices from './application/drug_type/IDrugTypeServices'
 import DrugTypeServices from './application/drug_type/DrugTypeServices'
+import NotFoundError from './application/errors/not_found'
 
 dotenv.config()
 
