@@ -6,6 +6,7 @@ import { makeAddAdverseReactionBetweenDrugs } from './use_cases/add_adverse_reac
 import { makeAddDrugAdministrationRoute } from './use_cases/add_drug_administration_route'
 import { makeAddDrugTypeToDrug } from './use_cases/add_drug_type_to_drug'
 import { makeGetDrugInformation } from './use_cases/get_drug_information'
+import { makeGetDrugsNames } from './use_cases/get_drugs_names'
 import { makeRegisterDrug } from './use_cases/register_drug'
 
 export default class DrugServices implements IDrugServices {
@@ -32,7 +33,5 @@ export default class DrugServices implements IDrugServices {
 		this.drugRepository,
 		this.administrationRouteRepository
 	)
-	getDrugsNames = (): Promise<string[]> => {
-		throw new Error('TO DO')
-	}
+	getDrugsNames = makeGetDrugsNames(this.drugRepository)
 }
