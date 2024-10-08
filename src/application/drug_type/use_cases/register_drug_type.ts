@@ -1,5 +1,6 @@
 import DrugType from '../../../domain/drug_type/DrugType'
 import DrugTypeRepository from '../../../domain/drug_type/DrugTypeRepository'
+import AlreadyExistsError from '../../errors/already_exists'
 
 export const makeRegisterDrugType = (
 	drugTypeRepository: DrugTypeRepository
@@ -8,7 +9,9 @@ export const makeRegisterDrugType = (
 		const drugType = await drugTypeRepository.findByType(dtype)
 
 		if (drugType !== undefined) {
-			throw new Error(`El tipo de fármaco '${dtype}' ya está registrado.`)
+			throw new AlreadyExistsError(
+				`El tipo de fármaco '${dtype}' ya está registrado.`
+			)
 		}
 
 		const newDrugType = new DrugType(dtype, description)

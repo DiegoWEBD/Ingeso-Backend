@@ -1,5 +1,6 @@
 import AdministrationRoute from '../../../domain/administration_route/AdministrationRoute'
 import AdministrationRouteRepository from '../../../domain/administration_route/AdministrationRouteRepository'
+import AlreadyExistsError from '../../errors/already_exists'
 
 export const makeRegisterAdministrationRoute = (
 	administrationRouteRepository: AdministrationRouteRepository
@@ -13,7 +14,9 @@ export const makeRegisterAdministrationRoute = (
 		)
 
 		if (administrationRoute !== undefined) {
-			throw new Error(`La vía de administración '${route}' ya está registrada.`)
+			throw new AlreadyExistsError(
+				`La vía de administración '${route}' ya está registrada.`
+			)
 		}
 
 		const newAdministrationRoute = new AdministrationRoute(route, description)
