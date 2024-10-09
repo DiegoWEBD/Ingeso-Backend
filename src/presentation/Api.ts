@@ -1,6 +1,7 @@
 import express, { Express } from 'express'
 import ApplicationServices from '../application/ApplicationServices'
 import { makeDrugRouter } from './drug/drug_router'
+import errorHandler from './http/errorHandler'
 
 export default class Api {
 	private app: Express
@@ -22,6 +23,8 @@ export default class Api {
 			'/drugs',
 			makeDrugRouter(this.applicationServices.getDrugServices())
 		)
+
+		this.app.use(errorHandler)
 
 		this.app.listen(port, () => {
 			console.log(`Server running at http://localhost:${port}`)
