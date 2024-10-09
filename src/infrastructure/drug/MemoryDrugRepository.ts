@@ -7,7 +7,7 @@ export default class MemoryDrugRepository implements DrugRepository {
 
 	constructor() {
 		if (MemoryDrugRepository.drugs) {
-			throw new Error('Cannot instantiate this repository more than once.')
+			throw new Error('No se puede instanciar este repositorio más de una vez.')
 		}
 
 		MemoryDrugRepository.drugs = [
