@@ -1,5 +1,6 @@
 import Drug from '../../domain/drug/Drug'
 import DrugRepository from '../../domain/drug/DrugRepository'
+import DrugType from '../../domain/drug_type/DrugType'
 
 export default class MemoryDrugRepository implements DrugRepository {
 	private static drugs: Drug[]
@@ -9,7 +10,15 @@ export default class MemoryDrugRepository implements DrugRepository {
 			throw new Error('Cannot instantiate this repository more than once.')
 		}
 
-		MemoryDrugRepository.drugs = []
+		MemoryDrugRepository.drugs = [
+			new Drug(
+				'Ibuprofeno',
+				'Descripción Ibuprofeno.',
+				[new DrugType('Antiinflamatorio', 'Descripcion antiinflamatorios.')],
+				[],
+				[]
+			),
+		]
 	}
 
 	async add(drug: Drug) {
