@@ -1,4 +1,4 @@
-import DrugType from '../../domain/drug_type/DrugType'
+import DrugType from '../../domain/drug_classification/DrugClassification'
 
 export default interface IDrugTypeServices {
 	getDrugTypes: () => Promise<Array<DrugType>>

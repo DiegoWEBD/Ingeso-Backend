@@ -1,6 +1,6 @@
 import Drug from '../../../domain/drug/Drug'
 import DrugRepository from '../../../domain/drug/DrugRepository'
-import DrugTypeRepository from '../../../domain/drug_type/DrugTypeRepository'
+import DrugTypeRepository from '../../../domain/drug_classification/DrugClassificationRepository'
 import AlreadyExistsError from '../../errors/already_exists'
 import NotFoundError from '../../errors/not_found'
 

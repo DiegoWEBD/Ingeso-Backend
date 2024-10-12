@@ -1,12 +1,12 @@
-import DrugType from '../drug_type/DrugType'
-import AdverseReaction from '../adverse_reaction/AdverseReaction'
+import DrugClassification from '../drug_classification/DrugClassification'
+import Ram from '../ram/Ram'
 import AdministrationProcedure from '../administration_procedure/AdministrationProcedure'
 export default class Drug {
 	constructor(
 		private name: string,
 		private description: string,
-		private drugTypes: Array<DrugType>,
-		private adverseReactions: Array<AdverseReaction>,
+		private drugClassifications: Array<DrugClassification>,
+		private rams: Array<Ram>,
 		private administrationProcedures: Array<AdministrationProcedure>
 	) {}
 
@@ -18,19 +18,15 @@ export default class Drug {
 		return this.description
 	}
 
-	getDrugTypes(): Array<DrugType> {
-		return this.drugTypes
+	getDrugClassifications(): Array<DrugClassification> {
+		return this.drugClassifications
 	}
 
-	getAdverseReactions(): Array<AdverseReaction> {
-		return this.adverseReactions
+	getRams(): Array<Ram> {
+		return this.rams
 	}
 
 	getAdministrationProcedures(): Array<AdministrationProcedure> {
 		return this.administrationProcedures
-	}
-
-	addAdverseReaction(adverseReaction: AdverseReaction) {
-		this.adverseReactions.push(adverseReaction)
 	}
 }

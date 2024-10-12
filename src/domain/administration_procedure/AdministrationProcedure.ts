@@ -1,12 +1,8 @@
-import AdministrationRoute from '../administration_route/AdministrationRoute'
 export default class AdministrationProcedure {
-	constructor(
-		private administrationRoute: AdministrationRoute,
-		private procedure: string
-	) {}
+	constructor(private method: string, private procedure: string) {}
 
-	getAdministrationRoute(): AdministrationRoute {
-		return this.administrationRoute
+	getMethod(): string {
+		return this.method
 	}
 
 	getProcedure(): string {

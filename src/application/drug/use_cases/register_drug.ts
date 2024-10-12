@@ -1,10 +1,10 @@
 import AdministrationProcedure from '../../../domain/administration_procedure/AdministrationProcedure'
 import AdministrationRouteRepository from '../../../domain/administration_route/AdministrationRouteRepository'
-import AdverseReaction from '../../../domain/adverse_reaction/AdverseReaction'
+import AdverseReaction from '../../../domain/ram/Ram'
 import Drug from '../../../domain/drug/Drug'
 import DrugRepository from '../../../domain/drug/DrugRepository'
-import DrugType from '../../../domain/drug_type/DrugType'
-import DrugTypeRepository from '../../../domain/drug_type/DrugTypeRepository'
+import DrugType from '../../../domain/drug_classification/DrugClassification'
+import DrugTypeRepository from '../../../domain/drug_classification/DrugClassificationRepository'
 import AlreadyExistsError from '../../errors/already_exists'
 import NotFoundError from '../../errors/not_found'
 

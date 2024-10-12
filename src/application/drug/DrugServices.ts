@@ -1,6 +1,5 @@
-import AdministrationRouteRepository from '../../domain/administration_route/AdministrationRouteRepository'
 import DrugRepository from '../../domain/drug/DrugRepository'
-import DrugTypeRepository from '../../domain/drug_type/DrugTypeRepository'
+import DrugTypeRepository from '../../domain/drug_classification/DrugClassificationRepository'
 import IDrugServices from './IDrugServices'
 import { makeAddAdverseReactionBetweenDrugs } from './use_cases/add_adverse_reaction_between_drugs'
 import { makeAddDrugAdministrationRoute } from './use_cases/add_drug_administration_route'
@@ -12,8 +11,7 @@ import { makeRegisterDrug } from './use_cases/register_drug'
 export default class DrugServices implements IDrugServices {
 	constructor(
 		private drugRepository: DrugRepository,
-		private drugTypeRepository: DrugTypeRepository,
-		private administrationRouteRepository: AdministrationRouteRepository
+		private drugTypeRepository: DrugTypeRepository
 	) {}
 
 	getDrugInformation = makeGetDrugInformation(this.drugRepository)

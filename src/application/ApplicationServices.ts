@@ -1,6 +1,5 @@
-import AdministrationRouteRepository from '../domain/administration_route/AdministrationRouteRepository'
 import DrugRepository from '../domain/drug/DrugRepository'
-import DrugTypeRepository from '../domain/drug_type/DrugTypeRepository'
+import DrugTypeRepository from '../domain/drug_classification/DrugClassificationRepository'
 import DrugServices from './drug/DrugServices'
 import IDrugServices from './drug/IDrugServices'
 import DrugTypeServices from './drug_type/DrugTypeServices'
@@ -12,15 +11,10 @@ export default class ApplicationServices {
 
 	constructor(
 		drugTypeRepository: DrugTypeRepository,
-		drugRepository: DrugRepository,
-		administrationRouteRepository: AdministrationRouteRepository
+		drugRepository: DrugRepository
 	) {
 		this.drugTypeServices = new DrugTypeServices(drugTypeRepository)
-		this.drugServices = new DrugServices(
-			drugRepository,
-			drugTypeRepository,
-			administrationRouteRepository
-		)
+		this.drugServices = new DrugServices(drugRepository, drugTypeRepository)
 	}
 
 	getDrugTypeServices(): IDrugTypeServices {

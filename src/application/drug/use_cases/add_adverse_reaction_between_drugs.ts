@@ -1,4 +1,4 @@
-import AdverseReaction from '../../../domain/adverse_reaction/AdverseReaction'
+import AdverseReaction from '../../../domain/ram/Ram'
 import Drug from '../../../domain/drug/Drug'
 import DrugRepository from '../../../domain/drug/DrugRepository'
 import AlreadyExistsError from '../../errors/already_exists'
