@@ -2,8 +2,8 @@ import DrugRepository from '../domain/drug/DrugRepository'
 import DrugTypeRepository from '../domain/drug_classification/DrugClassificationRepository'
 import DrugServices from './drug/DrugServices'
 import IDrugServices from './drug/IDrugServices'
-import DrugTypeServices from './drug_type/DrugTypeServices'
-import IDrugTypeServices from './drug_type/IDrugTypeServices'
+import DrugTypeServices from './drug_type/DrugClassificationServices'
+import IDrugTypeServices from './drug_type/IDrugClassificationServices'
 
 export default class ApplicationServices {
 	private drugTypeServices: IDrugTypeServices

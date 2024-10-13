@@ -5,7 +5,7 @@ export default interface DrugClassificationRepository {
 	getAll: () => Promise<Array<DrugClassification>>
 	findByClassification: (
 		classification: string
-	) => Promise<DrugClassification | undefined>
+	) => Promise<DrugClassification | null>
 	update: (
 		classification: string,
 		newValues: DrugClassification
