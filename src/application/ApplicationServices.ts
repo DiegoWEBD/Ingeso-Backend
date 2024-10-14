@@ -1,24 +1,29 @@
 import DrugRepository from '../domain/drug/DrugRepository'
-import DrugTypeRepository from '../domain/drug_classification/DrugClassificationRepository'
+import DrugClassificationRepository from '../domain/drug_classification/DrugClassificationRepository'
 import DrugServices from './drug/DrugServices'
 import IDrugServices from './drug/IDrugServices'
-import DrugTypeServices from './drug_type/DrugClassificationServices'
-import IDrugTypeServices from './drug_type/IDrugClassificationServices'
+import DrugClassificationServices from './drug_classification/DrugClassificationServices'
+import IDrugClassificationServices from './drug_classification/IDrugClassificationServices'
 
 export default class ApplicationServices {
-	private drugTypeServices: IDrugTypeServices
+	private drugClassificationServices: IDrugClassificationServices
 	private drugServices: IDrugServices
 
 	constructor(
-		drugTypeRepository: DrugTypeRepository,
+		drugClassificationRepository: DrugClassificationRepository,
 		drugRepository: DrugRepository
 	) {
-		this.drugTypeServices = new DrugTypeServices(drugTypeRepository)
-		this.drugServices = new DrugServices(drugRepository, drugTypeRepository)
+		this.drugClassificationServices = new DrugClassificationServices(
+			drugClassificationRepository
+		)
+		this.drugServices = new DrugServices(
+			drugRepository,
+			drugClassificationRepository
+		)
 	}
 
-	getDrugTypeServices(): IDrugTypeServices {
-		return this.drugTypeServices
+	getDrugClassificationServices(): IDrugClassificationServices {
+		return this.drugClassificationServices
 	}
 
 	getDrugServices(): IDrugServices {

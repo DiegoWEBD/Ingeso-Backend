@@ -1,39 +1,40 @@
 import Drug from '../../../domain/drug/Drug'
 import DrugRepository from '../../../domain/drug/DrugRepository'
-import DrugTypeRepository from '../../../domain/drug_classification/DrugClassificationRepository'
+import DrugClassificationRepository from '../../../domain/drug_classification/DrugClassificationRepository'
 import AlreadyExistsError from '../../errors/already_exists'
 import NotFoundError from '../../errors/not_found'
 
-export const makeAddDrugTypeToDrug = (
+export const makeAddClassificationToDrug = (
 	drugRepository: DrugRepository,
-	drugTypeRepository: DrugTypeRepository
+	drugClassificationRepository: DrugClassificationRepository
 ) => {
-	return async (drugName: string, dtype: string): Promise<Drug> => {
-		const drugType = await drugTypeRepository.findByType(dtype)
+	return async (drugName: string, classification: string): Promise<Drug> => {
+		const drugClassification =
+			await drugClassificationRepository.findByClassification(classification)
 
-		if (drugType === undefined) {
+		if (drugClassification === null) {
 			throw new NotFoundError(
-				`El tipo de fármaco '${dtype}' no está registrado.`
+				`La clasificación de fármaco '${classification}' no está registrada.`
 			)
 		}
 
 		const drug = await drugRepository.findByName(drugName)
 
-		if (drug === undefined) {
+		if (drug === null) {
 			throw new NotFoundError(`El fármaco '${drugName}' no está registrado.`)
 		}
 
-		const drugTypes = drug.getDrugTypes()
+		const drugClassifications = drug.getDrugClassifications()
 
-		for (let drugType of drugTypes) {
-			if (drugType.getDtype() === dtype) {
+		for (let drugClassification of drugClassifications) {
+			if (drugClassification.getClassification() === classification) {
 				throw new AlreadyExistsError(
-					`La relación entre el fármaco '${drugName}' y el tipo de fármaco '${dtype}' ya está registrada.`
+					`La relación entre el fármaco '${drugName}' y la clasificación '${classification}' ya está registrada.`
 				)
 			}
 		}
 
-		drug.getDrugTypes().push(drugType)
+		drug.getDrugClassifications().push(drugClassification)
 		await drugRepository.update(drugName, drug)
 
 		return drug

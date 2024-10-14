@@ -6,7 +6,7 @@ export const makeGetDrugInformation = (drugRepository: DrugRepository) => {
 	return async (name: string): Promise<Drug> => {
 		const drug = await drugRepository.findByName(name)
 
-		if (drug === undefined) {
+		if (drug === null) {
 			throw new NotFoundError(`El fármaco ${name} no está registrado.`)
 		}
 
