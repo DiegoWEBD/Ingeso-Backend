@@ -1,25 +1,21 @@
 import dotenv from 'dotenv'
 import ApplicationServices from './application/ApplicationServices'
-import AdministrationRouteRepository from './domain/administration_route/AdministrationRouteRepository'
 import DrugRepository from './domain/drug/DrugRepository'
-import DrugTypeRepository from './domain/drug_type/DrugTypeRepository'
-import MemoryAdministrationRouteRepository from './infrastructure/administration_route/MemoryAdministrationRouteRepository'
+import DrugClassificationRepository from './domain/drug_classification/DrugClassificationRepository'
 import MemoryDrugRepository from './infrastructure/drug/MemoryDrugRepository'
-import MemoryDrugTypeRepository from './infrastructure/drug_type/MemoryDrugTypeRepository'
 import Api from './presentation/Api'
+import MemoryDrugClassificationRepository from './infrastructure/drug_classification/MemoryDrugClassificationRepository'
 
 dotenv.config()
 
 // Repositorios
-const drugTypeRepository: DrugTypeRepository = new MemoryDrugTypeRepository()
+const drugClassificationRepository: DrugClassificationRepository =
+	new MemoryDrugClassificationRepository()
 const drugRepository: DrugRepository = new MemoryDrugRepository()
-const administrationRouteRepository: AdministrationRouteRepository =
-	new MemoryAdministrationRouteRepository()
 
 const applicationServices: ApplicationServices = new ApplicationServices(
-	drugTypeRepository,
-	drugRepository,
-	administrationRouteRepository
+	drugClassificationRepository,
+	drugRepository
 )
 
 const api: Api = new Api(applicationServices)
