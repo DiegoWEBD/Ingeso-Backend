@@ -3,6 +3,7 @@ import IDrugServices from '../../application/drug/IDrugServices'
 import HttpError from '../http/http_error'
 import { HttpResponse, makeHttpResponse } from '../http/http_response'
 import RequestHandler from '../http/request_handler'
+import Drug from '../../domain/drug/Drug'
 
 export const makeDrugRequestHandler = (
 	drugServices: IDrugServices
@@ -10,6 +11,13 @@ export const makeDrugRequestHandler = (
 	return async (request: Request): Promise<HttpResponse> => {
 		switch (request.method) {
 			case 'GET': {
+				if (request.params.name) {
+					const drug: Drug = await drugServices.getDrugInformation(
+						request.params.name
+					)
+					return makeHttpResponse(200, drug)
+				}
+
 				const drugsNames: string[] = await drugServices.getDrugsNames()
 				return makeHttpResponse(200, drugsNames)
 			}

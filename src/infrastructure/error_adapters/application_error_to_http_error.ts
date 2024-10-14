@@ -12,5 +12,5 @@ export const applicationErrorToHttpError = (
 	if (applicationError instanceof AlreadyExistsError)
 		return new HttpError(409, applicationError.message)
 
-	return new HttpError(404, applicationError.message)
+	return new HttpError(500, applicationError.message)
 }

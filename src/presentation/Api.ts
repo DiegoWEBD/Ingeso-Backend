@@ -1,4 +1,5 @@
 import express, { Express } from 'express'
+import cors from 'cors'
 import ApplicationServices from '../application/ApplicationServices'
 import { makeDrugRouter } from './drug/drug_router'
 
@@ -8,6 +9,7 @@ export default class Api {
 
 	constructor(applicationServices: ApplicationServices) {
 		this.app = express()
+		this.app.use(cors())
 		this.applicationServices = applicationServices
 	}
 
