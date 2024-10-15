@@ -2,6 +2,7 @@ import AdministrationProcedure from '../../../domain/administration_procedure/Ad
 import Drug from '../../../domain/drug/Drug'
 import DrugRepository from '../../../domain/drug/DrugRepository'
 import AlreadyExistsError from '../../errors/already_exists'
+import InvalidInputError from '../../errors/invalid_input'
 import NotFoundError from '../../errors/not_found'
 
 export const makeAddAdministrationProcedure = (
@@ -12,6 +13,16 @@ export const makeAddAdministrationProcedure = (
 		method: string,
 		procedure: string
 	): Promise<Drug> => {
+		const validMethods: Set<string> = new Set([
+			'bolo directo',
+			'bolo intermitente',
+			'infusión continua',
+		])
+
+		if (!validMethods.has(method)) {
+			throw new InvalidInputError(`Método '${method}' inválido.`)
+		}
+
 		const drug = await drugRepository.findByName(drugName)
 
 		if (drug === null) {
