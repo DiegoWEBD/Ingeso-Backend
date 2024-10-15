@@ -4,6 +4,7 @@ import HttpError from '../http/http_error'
 import { HttpResponse, makeHttpResponse } from '../http/http_response'
 import RequestHandler from '../http/request_handler'
 import Drug from '../../domain/drug/Drug'
+import DrugAdapter from '../../infrastructure/drug/adapter/DrugAdapter'
 
 export const makeDrugRequestHandler = (
 	drugServices: IDrugServices
@@ -15,7 +16,7 @@ export const makeDrugRequestHandler = (
 					const drug: Drug = await drugServices.getDrugInformation(
 						request.params.name
 					)
-					return makeHttpResponse(200, drug)
+					return makeHttpResponse(200, DrugAdapter.toJSON(drug))
 				}
 
 				const drugsNames: string[] = await drugServices.getDrugsNames()
