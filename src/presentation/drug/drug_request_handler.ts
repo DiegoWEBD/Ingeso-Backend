@@ -23,6 +23,24 @@ export const makeDrugRequestHandler = (
 				return makeHttpResponse(200, drugsNames)
 			}
 
+			case 'POST': {
+				const { name, description, classifications, rams, administrationProceduresWithMethod } = request.body
+				if (!name || !description) {
+					throw new HttpError(400, 'El nombre y la descripción son obligatorios.')
+				}
+
+				
+				const newDrug: Drug = await drugServices.registerDrug(
+					name,
+					description,
+					classifications,
+					rams,
+					new Map(administrationProceduresWithMethod)
+				)
+
+				return makeHttpResponse(201, DrugAdapter.toJSON(newDrug))
+			}
+
 			default: {
 				throw new HttpError(405, `Método ${request.method} no permitido.`)
 			}
