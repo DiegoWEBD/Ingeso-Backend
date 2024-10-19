@@ -13,7 +13,7 @@ export const makeAddTeacher = (
 
         const existingTeacher = await teacherRepository.findByEmail(email)
 
-        if(existingTeacher != null){
+        if(existingTeacher !== null){
             throw new AlreadyExistsError(`El profesor con correo '${email}' ya está registrado.`)
         }
 

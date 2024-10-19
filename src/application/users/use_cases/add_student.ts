@@ -12,7 +12,7 @@ export const makeAddStudent = (
 
         const existingStudent = await studentRepository.findByEmail(email)
 
-        if (existingStudent != null) {
+        if (existingStudent !== null) {
             throw new AlreadyExistsError(`El estudiante con correo '${email}' ya está registrado.`)
         }
 
