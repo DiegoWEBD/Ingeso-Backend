@@ -13,6 +13,7 @@ export const makeRegisterDrug = (
 ) => {
 	return async (
 		name: string,
+		presentation: string,
 		description: string,
 		classifications: Array<string>,
 		reactions: Array<string>,
@@ -59,6 +60,7 @@ export const makeRegisterDrug = (
 
 		const newDrug = new Drug(
 			name,
+			presentation,
 			description,
 			drugClassifications,
 			rams,

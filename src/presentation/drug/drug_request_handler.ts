@@ -16,10 +16,11 @@ export const makeDrugRequestHandler = (
 					const drug: Drug = await drugServices.getDrugInformation(
 						request.params.name
 					)
-					return makeHttpResponse(200, DrugAdapter.toJSON(drug))
+					return makeHttpResponse(200, DrugAdapter.ToJSON(drug))
 				}
 
 				const drugsNames: string[] = await drugServices.getDrugsNames()
+
 				return makeHttpResponse(200, drugsNames)
 			}
 

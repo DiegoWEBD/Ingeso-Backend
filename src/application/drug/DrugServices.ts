@@ -26,6 +26,7 @@ export default class DrugServices implements IDrugServices {
 	registerDrug: (
 		name: string,
 		description: string,
+		presentation: string,
 		classifications: Array<string>,
 		rams: Array<string>,
 		administrationProceduresWithMethod: Map<string, string>
