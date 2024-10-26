@@ -19,12 +19,17 @@ export default class Database {
 		this.db = this.pgp(this.connectionData)
 	}
 
-	async queryOne(query: string, params: Array<any>): Promise<any> {
-		return this.db.oneOrNone(query, params)
+	async execute(query: string, params: Array<string>): Promise<void> {
+		await this.db.none(query, params)
+	}
+
+	async queryOne(query: string, params: Array<any>): Promise<any | null> {
+		const data: any | undefined = await this.db.oneOrNone(query, params)
+		return data ? data : null
 	}
 
 	async queryMany(query: string, params: Array<any>): Promise<Array<any>> {
-		return this.db.many(query, params)
+		return await this.db.many(query, params)
 	}
 
 	close(): void {

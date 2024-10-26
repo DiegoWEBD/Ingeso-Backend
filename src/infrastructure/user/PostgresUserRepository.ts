@@ -1,0 +1,50 @@
+import { Student } from '../../domain/student/Student'
+import Teacher from '../../domain/teacher/Teacher'
+import User from '../../domain/user/User'
+import UserRepository from '../../domain/user/UserRepository'
+import Database from '../../presentation/database/Database'
+
+export default class PostgresUserRepository implements UserRepository {
+	constructor(private database: Database) {}
+
+	async add(user: User): Promise<void> {
+		await this.database.execute(
+			'insert into app_user (institutional_email, name) values ($1, $2)',
+			[user.getInstitutionalEmail(), user.getName()]
+		)
+
+		if (user instanceof Teacher) {
+			await this.database.execute(
+				'insert into teacher (institutional_email) values ($1)',
+				[user.getInstitutionalEmail()]
+			)
+		} else if (user instanceof Student) {
+			await this.database.execute(
+				'insert into student (institutional_email) values ($1)',
+				[user.getInstitutionalEmail()]
+			)
+		}
+	}
+
+	async findByInstitutionalEmail(
+		institutionalEmail: string
+	): Promise<User | null> {
+		let userData: any | null = await this.database.queryOne(
+			'select t.institutional_email, au.name from teacher t inner join app_user au on t.institutional_email = au.institutional_email where t.institutional_email = $1',
+			[institutionalEmail]
+		)
+
+		if (userData !== null) {
+			return new Teacher(userData.name, institutionalEmail)
+		}
+
+		userData = await this.database.queryOne(
+			'select s.institutional_email, au.name from student s inner join app_user au on s.institutional_email = au.institutional_email where s.institutional_email = $1',
+			[institutionalEmail]
+		)
+
+		return userData !== null
+			? new Student(userData.name, institutionalEmail)
+			: null
+	}
+}

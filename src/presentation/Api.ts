@@ -2,6 +2,7 @@ import express, { Express } from 'express'
 import cors from 'cors'
 import ApplicationServices from '../application/ApplicationServices'
 import { makeDrugRouter } from './drug/drug_router'
+import { makeAuthenticationRouter } from './auth/authentication_router'
 
 export default class Api {
 	private app: Express
@@ -10,6 +11,7 @@ export default class Api {
 	constructor(applicationServices: ApplicationServices) {
 		this.app = express()
 		this.app.use(cors())
+		this.app.use(express.json())
 		this.applicationServices = applicationServices
 	}
 
@@ -19,6 +21,11 @@ export default class Api {
 				message: 'Api OK!',
 			})
 		})
+
+		this.app.use(
+			'/auth',
+			makeAuthenticationRouter(this.applicationServices.getUserServices())
+		)
 
 		this.app.use(
 			'/drugs',

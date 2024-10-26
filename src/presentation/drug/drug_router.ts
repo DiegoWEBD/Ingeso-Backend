@@ -5,9 +5,9 @@ import { makeDrugRequestHandler } from './drug_request_handler'
 import { makeController } from '../http/controller'
 
 export const makeDrugRouter = (drugServices: IDrugServices): Router => {
-	const router = Router()
 	const requestHandler: RequestHandler = makeDrugRequestHandler(drugServices)
 	const drugController = makeController(requestHandler)
+	const router = Router()
 
 	router.all('/', drugController)
 	router.all('/:name', drugController)
