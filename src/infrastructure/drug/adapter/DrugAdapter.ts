@@ -2,6 +2,9 @@ import AdministrationProcedure from '../../../domain/administration_procedure/Ad
 import Drug from '../../../domain/drug/Drug'
 import DrugClassification from '../../../domain/drug_classification/DrugClassification'
 import Ram from '../../../domain/ram/Ram'
+import AdministrationProcedureAdpater from '../../administration_procedure/adapter/AdministrationProcedureAdapter'
+import DrugClassificationAdapter from '../../drug_classification/adapter/DrugClassificationAdapter'
+import RamAdapter from '../../ram/adapter/RamAdapter'
 import { DrugJSON } from './DrugJSON'
 
 export default class DrugAdapter {
@@ -10,20 +13,15 @@ export default class DrugAdapter {
 	static ToJSON(drug: Drug): DrugJSON {
 		return {
 			name: drug.getName(),
+			presentation: drug.getPresentation(),
 			description: drug.getDescription(),
 			drug_classifications: drug
 				.getDrugClassifications()
-				.map((drugClassification) => ({
-					classification: drugClassification.getClassification(),
-					description: drugClassification.getDescription(),
-				})),
-			rams: drug.getRams().map((ram) => ({ reaction: ram.getReaction() })),
+				.map(DrugClassificationAdapter.ToJSON),
+			rams: drug.getRams().map(RamAdapter.ToJSON),
 			administration_procedures: drug
 				.getAdministrationProcedures()
-				.map((administrationProcedure) => ({
-					method: administrationProcedure.getMethod(),
-					procedure: administrationProcedure.getProcedure(),
-				})),
+				.map(AdministrationProcedureAdpater.ToJSON),
 		}
 	}
 

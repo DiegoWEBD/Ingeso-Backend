@@ -4,6 +4,7 @@ import { RamJSON } from '../../ram/adapter/RamJSON'
 
 export type DrugJSON = {
 	name: string
+	presentation: string
 	description: string
 	drug_classifications: Array<DrugClassificationJSON>
 	rams: Array<RamJSON>

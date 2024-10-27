@@ -14,6 +14,6 @@ export const makeFindByName = (database: Database) => {
 			[name]
 		)
 
-		return drugData ? DrugAdapter.FromDB(drugData) : null
+		return drugData.length > 0 ? DrugAdapter.FromDB(drugData) : null
 	}
 }
