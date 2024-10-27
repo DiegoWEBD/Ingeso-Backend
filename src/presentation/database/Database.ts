@@ -35,7 +35,8 @@ export default class Database {
 	}
 
 	async queryMany(query: string, params: Array<any>): Promise<Array<any>> {
-		return await this.db.many(query, params)
+		const data = await this.db.manyOrNone(query, params)
+		return data ? data : []
 	}
 
 	close(): void {
