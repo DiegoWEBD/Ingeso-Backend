@@ -5,6 +5,7 @@ export default interface IDrugServices {
 	getDrugsNames: () => Promise<Array<string>>
 	registerDrug: (
 		name: string,
+		presentation: string,
 		description: string,
 		classifications: Array<string>,
 		rams: Array<string>,

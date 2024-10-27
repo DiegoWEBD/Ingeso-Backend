@@ -5,13 +5,17 @@ import DrugClassificationRepository from './domain/drug_classification/DrugClass
 import MemoryDrugRepository from './infrastructure/drug/MemoryDrugRepository'
 import Api from './presentation/Api'
 import MemoryDrugClassificationRepository from './infrastructure/drug_classification/MemoryDrugClassificationRepository'
+import Database from './presentation/database/Database'
+import PostgresDrugRepository from './infrastructure/drug/postgres_repository/PostgresDrugRepository'
 
 dotenv.config()
+
+const database = new Database()
 
 // Repositorios
 const drugClassificationRepository: DrugClassificationRepository =
 	new MemoryDrugClassificationRepository()
-const drugRepository: DrugRepository = new MemoryDrugRepository()
+const drugRepository: DrugRepository = new PostgresDrugRepository(database)
 
 const applicationServices: ApplicationServices = new ApplicationServices(
 	drugClassificationRepository,

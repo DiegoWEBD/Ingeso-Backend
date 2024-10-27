@@ -256,6 +256,9 @@ export default class MemoryDrugRepository implements DrugRepository {
 			),
 		]
 	}
+	async getAllNames(): Promise<Array<string>> {
+		return []
+	}
 
 	async add(drug: Drug) {
 		MemoryDrugRepository.drugs.push(drug)

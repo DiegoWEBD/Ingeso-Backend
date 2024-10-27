@@ -4,6 +4,7 @@ import AdministrationProcedure from '../administration_procedure/AdministrationP
 export default class Drug {
 	constructor(
 		private name: string,
+		private presentation: string,
 		private description: string,
 		private drugClassifications: Array<DrugClassification>,
 		private rams: Array<Ram>,
@@ -16,6 +17,10 @@ export default class Drug {
 
 	getDescription(): string {
 		return this.description
+	}
+
+	getPresentation(): string {
+		return this.presentation
 	}
 
 	getDrugClassifications(): Array<DrugClassification> {
