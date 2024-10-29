@@ -1,8 +1,9 @@
-import express, { Express } from 'express'
 import cors from 'cors'
+import express, { Express } from 'express'
 import ApplicationServices from '../application/ApplicationServices'
+import { makeAuthenticationMiddleware } from './authorization/authorization_middleware'
 import { makeDrugRouter } from './drug/drug_router'
-import { makeAuthenticationRouter } from './auth/authentication_router'
+import { makeAuthenticationRouter } from './google_auth/google_authentication_router'
 
 export default class Api {
 	private app: Express
@@ -29,6 +30,7 @@ export default class Api {
 
 		this.app.use(
 			'/drugs',
+			makeAuthenticationMiddleware(this.applicationServices.getUserServices()),
 			makeDrugRouter(this.applicationServices.getDrugServices())
 		)
 
