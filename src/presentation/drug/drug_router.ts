@@ -11,7 +11,7 @@ export const makeDrugRouter = (drugServices: IDrugServices): Router => {
 	const router = Router()
 
 	router.all('/', drugController)
-	router.all('/:name', teacherAuthorizationMiddleware, drugController)
+	router.all('/:name', drugController)
 
 	return router
 }

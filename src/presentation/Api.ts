@@ -18,8 +18,22 @@ export default class Api {
 
 	run(port: number | string) {
 		this.app.get('/', (_, res) => {
-			res.json({
-				message: 'Api OK!',
+			res.status(200).json({
+				message: 'Api de la aplicación "Guía de Farmacología".',
+				endpoints: [
+					{
+						endpoint: '/drugs',
+						description:
+							'Obtener información de los fármacos registrados en el sistema.',
+						protected: true,
+					},
+					{
+						endpoint: '/auth',
+						description:
+							'Autenticar una cuenta institucional de un alumno o profesor de la Universidad Católica del Norte.',
+						protected: false,
+					},
+				],
 			})
 		})
 
