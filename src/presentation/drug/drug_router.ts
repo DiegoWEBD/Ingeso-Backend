@@ -1,8 +1,9 @@
 import { Router } from 'express'
 import IDrugServices from '../../application/drug/IDrugServices'
+import { teacherAuthorizationMiddleware } from '../authorization/teacher_authorization_middleware'
+import { makeController } from '../http/controller'
 import RequestHandler from '../http/request_handler'
 import { makeDrugRequestHandler } from './drug_request_handler'
-import { makeController } from '../http/controller'
 
 export const makeDrugRouter = (drugServices: IDrugServices): Router => {
 	const requestHandler: RequestHandler = makeDrugRequestHandler(drugServices)

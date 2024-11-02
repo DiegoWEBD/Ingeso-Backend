@@ -1,16 +1,16 @@
-import { Request } from 'express'
-import IUserServices from '../../application/user/IUserServices'
-import RequestHandler from '../http/request_handler'
-import { HttpResponse, makeHttpResponse } from '../http/http_response'
-import HttpError from '../http/http_error'
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
+import IUserServices from '../../application/user/IUserServices'
 import UserAdapter from '../../infrastructure/user/adapter/UserAdapter'
+import HttpError from '../http/http_error'
+import { HttpResponse, makeHttpResponse } from '../http/http_response'
+import RequestHandler from '../http/request_handler'
+import RequestWithUser from '../http/types/RequestWithUser'
 
-export const makeAuthenticationRequestHandler = (
+export const makeGoogleAuthenticationRequestHandler = (
 	userServices: IUserServices
 ): RequestHandler => {
-	return async (request: Request): Promise<HttpResponse> => {
+	return async (request: RequestWithUser): Promise<HttpResponse> => {
 		switch (request.method) {
 			case 'POST': {
 				const jwtSecret = process.env.JWT_SECRET
@@ -71,7 +71,7 @@ export const makeAuthenticationRequestHandler = (
 					},
 					jwtSecret,
 					{
-						expiresIn: '24h',
+						expiresIn: '7d',
 					}
 				)
 

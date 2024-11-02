@@ -1,8 +1,9 @@
-import express, { Express } from 'express'
 import cors from 'cors'
+import express, { Express } from 'express'
 import ApplicationServices from '../application/ApplicationServices'
+import { makeAuthenticationMiddleware } from './authorization/authorization_middleware'
 import { makeDrugRouter } from './drug/drug_router'
-import { makeAuthenticationRouter } from './auth/authentication_router'
+import { makeAuthenticationRouter } from './google_auth/google_authentication_router'
 
 export default class Api {
 	private app: Express
@@ -17,8 +18,22 @@ export default class Api {
 
 	run(port: number | string) {
 		this.app.get('/', (_, res) => {
-			res.json({
-				message: 'Api OK!',
+			res.status(200).json({
+				message: 'Api de la aplicación "Guía de Farmacología".',
+				endpoints: [
+					{
+						endpoint: '/drugs',
+						description:
+							'Obtener información de los fármacos registrados en el sistema.',
+						protected: true,
+					},
+					{
+						endpoint: '/auth',
+						description:
+							'Autenticar una cuenta institucional de un alumno o profesor de la Universidad Católica del Norte.',
+						protected: false,
+					},
+				],
 			})
 		})
 
@@ -29,6 +44,7 @@ export default class Api {
 
 		this.app.use(
 			'/drugs',
+			makeAuthenticationMiddleware(this.applicationServices.getUserServices()),
 			makeDrugRouter(this.applicationServices.getDrugServices())
 		)
 

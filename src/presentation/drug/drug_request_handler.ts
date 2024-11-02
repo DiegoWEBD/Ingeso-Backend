@@ -1,15 +1,15 @@
-import { Request } from 'express'
 import IDrugServices from '../../application/drug/IDrugServices'
+import Drug from '../../domain/drug/Drug'
+import DrugAdapter from '../../infrastructure/drug/adapter/DrugAdapter'
 import HttpError from '../http/http_error'
 import { HttpResponse, makeHttpResponse } from '../http/http_response'
 import RequestHandler from '../http/request_handler'
-import Drug from '../../domain/drug/Drug'
-import DrugAdapter from '../../infrastructure/drug/adapter/DrugAdapter'
+import RequestWithUser from '../http/types/RequestWithUser'
 
 export const makeDrugRequestHandler = (
 	drugServices: IDrugServices
 ): RequestHandler => {
-	return async (request: Request): Promise<HttpResponse> => {
+	return async (request: RequestWithUser): Promise<HttpResponse> => {
 		switch (request.method) {
 			case 'GET': {
 				if (request.params.name) {

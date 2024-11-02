@@ -1,6 +1,6 @@
-import { Request } from 'express'
 import { HttpResponse } from './http_response'
+import RequestWithUser from './types/RequestWithUser'
 
-type RequestHandler = (request: Request) => Promise<HttpResponse>
+type RequestHandler = (request: RequestWithUser) => Promise<HttpResponse>
 
 export default RequestHandler
