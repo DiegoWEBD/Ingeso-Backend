@@ -11,7 +11,7 @@ export const teacherAuthorizationMiddleware: Middleware = (
 	if (req.user instanceof Teacher) {
 		next()
 	}
-	res.status(301).json({
+	res.status(401).json({
 		message: 'Tu cuenta no tiene permisos para acceder a estos recursos.',
 	})
 	return
