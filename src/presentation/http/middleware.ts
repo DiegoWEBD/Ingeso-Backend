@@ -1,7 +1,8 @@
-import { NextFunction, Request, Response } from 'express'
+import { NextFunction, Response } from 'express'
+import RequestWithUser from './types/RequestWithUser'
 
 export type Middleware = (
-	req: Request,
+	req: RequestWithUser,
 	res: Response,
 	next: NextFunction
 ) => void

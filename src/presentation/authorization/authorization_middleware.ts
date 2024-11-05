@@ -11,7 +11,7 @@ export const makeAuthenticationMiddleware = (
 		const accessToken = req.headers.authorization
 
 		if (!accessToken) {
-			res.status(403).json({
+			res.status(401).json({
 				message: 'No tienes permisos para acceder a estos recursos.',
 			})
 			return
