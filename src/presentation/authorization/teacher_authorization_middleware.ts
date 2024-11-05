@@ -12,7 +12,7 @@ export const teacherAuthorizationMiddleware: Middleware = (
 		next()
 	}
 	res.status(401).json({
-		message: 'Tu cuenta no tiene permisos para acceder a estos recursos.',
+		message: 'Tu cuenta no tiene permisos para acceder a este recurso.',
 	})
 	return
 }

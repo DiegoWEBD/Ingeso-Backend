@@ -12,7 +12,7 @@ export const makeAuthenticationMiddleware = (
 
 		if (!accessToken) {
 			res.status(401).json({
-				message: 'No tienes permisos para acceder a estos recursos.',
+				message: 'No tienes permisos para acceder a este recurso.',
 			})
 			return
 		}
@@ -26,7 +26,7 @@ export const makeAuthenticationMiddleware = (
 			)
 		} catch (error) {
 			res.status(401).json({
-				message: 'No tienes permisos para acceder a estos recursos.',
+				message: 'No tienes permisos para acceder a este recurso.',
 				error,
 			})
 			return

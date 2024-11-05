@@ -4,6 +4,7 @@ import ApplicationServices from '../application/ApplicationServices'
 import { makeAuthenticationMiddleware } from './authorization/authorization_middleware'
 import { makeDrugRouter } from './drug/drug_router'
 import { makeAuthenticationRouter } from './google_auth/google_authentication_router'
+import { makeUserRouter } from './user/user_router'
 
 export default class Api {
 	private app: Express
@@ -37,6 +38,10 @@ export default class Api {
 			})
 		})
 
+		const authenticationMiddleware = makeAuthenticationMiddleware(
+			this.applicationServices.getUserServices()
+		)
+
 		this.app.use(
 			'/auth',
 			makeAuthenticationRouter(this.applicationServices.getUserServices())
@@ -44,8 +49,14 @@ export default class Api {
 
 		this.app.use(
 			'/drugs',
-			makeAuthenticationMiddleware(this.applicationServices.getUserServices()),
+			authenticationMiddleware,
 			makeDrugRouter(this.applicationServices.getDrugServices())
+		)
+
+		this.app.use(
+			'/user',
+			authenticationMiddleware,
+			makeUserRouter(this.applicationServices.getUserServices())
 		)
 
 		this.app.listen(port, () => {
