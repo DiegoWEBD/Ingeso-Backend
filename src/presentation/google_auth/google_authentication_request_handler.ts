@@ -10,6 +10,16 @@ import RequestWithUser from '../http/types/RequestWithUser'
 export const makeGoogleAuthenticationRequestHandler = (
 	userServices: IUserServices
 ): RequestHandler => {
+	const isInstitutionalEmail = (email: string): boolean => {
+		const domain = email.split('@')[1]
+
+		return (
+			domain === 'ucn.cl' ||
+			domain === 'alumnos.ucn.cl' ||
+			domain === 'ce.ucn.cl'
+		)
+	}
+
 	return async (request: RequestWithUser): Promise<HttpResponse> => {
 		switch (request.method) {
 			case 'POST': {
@@ -42,6 +52,14 @@ export const makeGoogleAuthenticationRequestHandler = (
 				)
 
 				const { name, email } = userInfoResponse.data
+
+				if (!isInstitutionalEmail(email)) {
+					throw new HttpError(
+						401,
+						'Correo inválido, ingrese con su correo institucional UCN.'
+					)
+				}
+
 				let user = await userServices.findUser(email)
 
 				if (user !== null) {
