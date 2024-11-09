@@ -1,5 +1,6 @@
 import IUserServices from '../../application/user/IUserServices'
 import User from '../../domain/user/User'
+import UserAdapter from '../../infrastructure/user/adapter/UserAdapter'
 import HttpError from '../http/http_error'
 import { HttpResponse, makeHttpResponse } from '../http/http_response'
 import RequestHandler from '../http/request_handler'
@@ -16,7 +17,7 @@ export const makeUserRequestHandler = (
 					loggedUser.getInstitutionalEmail()
 				)
 
-				return makeHttpResponse(200, { user })
+				return makeHttpResponse(200, { user: UserAdapter.ToJSON(user) })
 			}
 
 			default: {
