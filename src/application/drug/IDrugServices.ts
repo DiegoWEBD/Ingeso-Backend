@@ -21,4 +21,5 @@ export default interface IDrugServices {
 		method: string,
 		procedure: string
 	) => Promise<Drug>
+	deleteDrug: (drugName: string) => Promise<Drug>
 }
