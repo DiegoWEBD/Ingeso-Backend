@@ -34,4 +34,29 @@ export default class Drug {
 	getAdministrationProcedures(): Array<AdministrationProcedure> {
 		return this.administrationProcedures
 	}
+	setName(newName: string): void {
+		this.name = newName
+	}
+
+	setDescription(newDescription: string): void {
+		this.description = newDescription
+	}
+
+	setPresentation(newPresentation: string): void {
+		this.presentation = newPresentation
+	}
+
+	setDrugClassifications(newClassifications: Array<DrugClassification>): void {
+		this.drugClassifications = newClassifications
+	}
+
+	setRams(newRams: Array<Ram>): void {
+		this.rams = newRams
+	}
+
+	setAdministrationProcedures(
+		newProcedures: Array<AdministrationProcedure>
+	): void {
+		this.administrationProcedures = newProcedures
+	}
 }
