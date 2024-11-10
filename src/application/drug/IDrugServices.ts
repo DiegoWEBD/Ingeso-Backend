@@ -30,6 +30,6 @@ export default interface IDrugServices {
 		newReactions?: Array<string>,
 		newAdministrationProcedures?: Map<string, string>
 	) => Promise<Drug>
-	deleteDrug: (drugName: string) => Promise<Drug>
 
+	deleteDrug: (drugName: string) => Promise<Drug>
 }

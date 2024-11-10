@@ -65,9 +65,8 @@ export default class DrugServices implements IDrugServices {
 	) => Promise<Drug> = makeUpdateDrug(
 		this.drugRepository,
 		this.drugClassificationRepository
-
+	)
 	deleteDrug: (drugName: string) => Promise<Drug> = makeDeleteDrug(
 		this.drugRepository
-
 	)
 }
