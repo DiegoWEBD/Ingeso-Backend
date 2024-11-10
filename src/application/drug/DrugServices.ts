@@ -5,6 +5,7 @@ import IDrugServices from './IDrugServices'
 import { makeAddAdministrationProcedure } from './use_cases/add_administration_procedure'
 import { makeAddClassificationToDrug } from './use_cases/add_classification_to_drug'
 import { makeAddRamToDrug } from './use_cases/add_ram_to_drug'
+import { makeDeleteDrug } from './use_cases/delete_drug'
 import { makeGetDrugInformation } from './use_cases/get_drug_information'
 import { makeGetDrugsNames } from './use_cases/get_drugs_names'
 import { makeRegisterDrug } from './use_cases/register_drug'
@@ -64,5 +65,9 @@ export default class DrugServices implements IDrugServices {
 	) => Promise<Drug> = makeUpdateDrug(
 		this.drugRepository,
 		this.drugClassificationRepository
+
+	deleteDrug: (drugName: string) => Promise<Drug> = makeDeleteDrug(
+		this.drugRepository
+
 	)
 }
