@@ -21,5 +21,15 @@ export default interface IDrugServices {
 		method: string,
 		procedure: string
 	) => Promise<Drug>
+	updateDrug: (
+		name: string,
+		newName?: string,
+		newPresentation?: string,
+		newDescription?: string,
+		newClassifications?: Array<string>,
+		newReactions?: Array<string>,
+		newAdministrationProcedures?: Map<string, string>
+	) => Promise<Drug>
 	deleteDrug: (drugName: string) => Promise<Drug>
+
 }
