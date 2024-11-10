@@ -24,6 +24,19 @@ export const makeDrugRequestHandler = (
 				return makeHttpResponse(200, drugsNames)
 			}
 
+			case 'DELETE': {
+				if (!request.params.name) {
+					throw new HttpError(400, 'El nombre de fármaco no fue proporcionado.')
+				}
+
+				const deletedDrug = await drugServices.deleteDrug(request.params.name)
+
+				return makeHttpResponse(
+					200,
+					`Fármaco ${deletedDrug} eliminado correctamente.`
+				)
+			}
+
 			default: {
 				throw new HttpError(405, `Método ${request.method} no permitido.`)
 			}
