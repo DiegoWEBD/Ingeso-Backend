@@ -26,37 +26,49 @@ export const makeDrugRequestHandler = (
 
 			case 'POST': {
 				if (!request.body) {
-				  throw new HttpError(400, 'Faltan datos del fármaco.');
+					throw new HttpError(400, 'Faltan datos del fármaco.')
 				}
-		
-				const { name, presentation, description, classifications, rams, administrationProceduresWithMethod } = request.body;
-		
-				try {
-				  // Crear el objeto Drug
-				  const drug = new Drug(name, presentation, description, classifications, rams, administrationProceduresWithMethod);
-		
-				  // Llamar al servicio para registrar el fármaco
-				  const registeredDrug = await drugServices.registerDrug(
+
+				const {
+					name,
+					presentation,
+					description,
+					classifications,
+					rams,
+					administrationProceduresWithMethod,
+				} = request.body
+
+				// Crear el objeto Drug
+				const drug = new Drug(
+					name,
+					presentation,
+					description,
+					classifications,
+					rams,
+					administrationProceduresWithMethod
+				)
+
+				// Llamar al servicio para registrar el fármaco
+				const registeredDrug = await drugServices.registerDrug(
 					drug.getName(),
 					drug.getPresentation(),
 					drug.getDescription(),
-					drug.getDrugClassifications().map((classification) => classification.getClassification()),
+					drug
+						.getDrugClassifications()
+						.map((classification) => classification.getClassification()),
 					drug.getRams().map((ram) => ram.getReaction()),
 					new Map<string, string>(
-					  drug.getAdministrationProcedures().map((procedure) => [procedure.getMethod(), procedure.getProcedure()])
+						drug
+							.getAdministrationProcedures()
+							.map((procedure) => [
+								procedure.getMethod(),
+								procedure.getProcedure(),
+							])
 					)
-				  );
-		
-				  return makeHttpResponse(200, registeredDrug);
-				} catch (error: unknown) {
-					if (error instanceof Error){
-						throw new HttpError(500, `Error al registrar el fármaco: ${error.message}`);
-					}
-				    else{
-						throw new HttpError(500, `Error desconocido al registrar el fármaco`);
-					}
-				}
-			  }
+				)
+
+				return makeHttpResponse(200, registeredDrug)
+			}
 
 			case 'DELETE': {
 				if (!request.params.name) {
