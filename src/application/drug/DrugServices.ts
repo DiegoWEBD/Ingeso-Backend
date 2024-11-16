@@ -1,9 +1,7 @@
 import Drug from '../../domain/drug/Drug'
 import DrugRepository from '../../domain/drug/DrugRepository'
-import DrugClassificationREpository from '../../domain/drug_classification/DrugClassificationRepository'
 import IDrugServices from './IDrugServices'
 import { makeAddAdministrationProcedure } from './use_cases/add_administration_procedure'
-import { makeAddClassificationToDrug } from './use_cases/add_classification_to_drug'
 import { makeAddRamToDrug } from './use_cases/add_ram_to_drug'
 import { makeDeleteDrug } from './use_cases/delete_drug'
 import { makeGetDrugInformation } from './use_cases/get_drug_information'
@@ -12,10 +10,7 @@ import { makeRegisterDrug } from './use_cases/register_drug'
 import { makeUpdateDrug } from './use_cases/update_drug'
 
 export default class DrugServices implements IDrugServices {
-	constructor(
-		private drugRepository: DrugRepository,
-		private drugClassificationRepository: DrugClassificationREpository
-	) {}
+	constructor(private drugRepository: DrugRepository) {}
 
 	getDrugInformation: (name: string) => Promise<Drug> = makeGetDrugInformation(
 		this.drugRepository
@@ -27,23 +22,11 @@ export default class DrugServices implements IDrugServices {
 
 	registerDrug: (
 		name: string,
-		description: string,
 		presentation: string,
-		classifications: Array<string>,
-		rams: Array<string>,
+		description: string,
+		reactions: Array<string>,
 		administrationProceduresWithMethod: Map<string, string>
-	) => Promise<Drug> = makeRegisterDrug(
-		this.drugRepository,
-		this.drugClassificationRepository
-	)
-
-	addClassificationToDrug: (
-		drugName: string,
-		classification: string
-	) => Promise<Drug> = makeAddClassificationToDrug(
-		this.drugRepository,
-		this.drugClassificationRepository
-	)
+	) => Promise<Drug> = makeRegisterDrug(this.drugRepository)
 
 	addRamToDrug: (drugName: string, reaction: string) => Promise<Drug> =
 		makeAddRamToDrug(this.drugRepository)
@@ -59,13 +42,9 @@ export default class DrugServices implements IDrugServices {
 		newName?: string,
 		newPresentation?: string,
 		newDescription?: string,
-		newClassifications?: Array<string>,
 		newReactions?: Array<string>,
 		newAdministrationProcedures?: Map<string, string>
-	) => Promise<Drug> = makeUpdateDrug(
-		this.drugRepository,
-		this.drugClassificationRepository
-	)
+	) => Promise<Drug> = makeUpdateDrug(this.drugRepository)
 	deleteDrug: (drugName: string) => Promise<Drug> = makeDeleteDrug(
 		this.drugRepository
 	)

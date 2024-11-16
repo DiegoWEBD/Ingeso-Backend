@@ -1,9 +1,7 @@
 import AdministrationProcedure from '../../../domain/administration_procedure/AdministrationProcedure'
 import Drug from '../../../domain/drug/Drug'
-import DrugClassification from '../../../domain/drug_classification/DrugClassification'
 import Ram from '../../../domain/ram/Ram'
 import AdministrationProcedureAdpater from '../../administration_procedure/adapter/AdministrationProcedureAdapter'
-import DrugClassificationAdapter from '../../drug_classification/adapter/DrugClassificationAdapter'
 import RamAdapter from '../../ram/adapter/RamAdapter'
 import { DrugJSON } from './DrugJSON'
 
@@ -15,9 +13,6 @@ export default class DrugAdapter {
 			name: drug.getName(),
 			presentation: drug.getPresentation(),
 			description: drug.getDescription(),
-			drug_classifications: drug
-				.getDrugClassifications()
-				.map(DrugClassificationAdapter.ToJSON),
 			rams: drug.getRams().map(RamAdapter.ToJSON),
 			administration_procedures: drug
 				.getAdministrationProcedures()
@@ -32,7 +27,6 @@ export default class DrugAdapter {
 			description: dbDrug[0].description,
 			administrationProcedures: new Array<AdministrationProcedure>(),
 			rams: [new Ram(dbDrug[0].reaction)],
-			classifications: new Array<DrugClassification>(),
 		}
 
 		for (let row of dbDrug) {
@@ -51,7 +45,6 @@ export default class DrugAdapter {
 			adaptedDrug.name,
 			adaptedDrug.presentation,
 			adaptedDrug.description,
-			adaptedDrug.classifications,
 			adaptedDrug.rams,
 			adaptedDrug.administrationProcedures
 		)

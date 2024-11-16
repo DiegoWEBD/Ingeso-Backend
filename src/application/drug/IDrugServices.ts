@@ -7,13 +7,8 @@ export default interface IDrugServices {
 		name: string,
 		presentation: string,
 		description: string,
-		classifications: Array<string>,
 		rams: Array<string>,
 		administrationProceduresWithMethod: Map<string, string>
-	) => Promise<Drug>
-	addClassificationToDrug: (
-		drugName: string,
-		classification: string
 	) => Promise<Drug>
 	addRamToDrug: (drugName: string, reaction: string) => Promise<Drug>
 	addAdministrationProcedure: (
@@ -26,7 +21,6 @@ export default interface IDrugServices {
 		newName?: string,
 		newPresentation?: string,
 		newDescription?: string,
-		newClassifications?: Array<string>,
 		newReactions?: Array<string>,
 		newAdministrationProcedures?: Map<string, string>
 	) => Promise<Drug>
