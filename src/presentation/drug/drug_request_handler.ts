@@ -1,5 +1,6 @@
 import IDrugServices from '../../application/drug/IDrugServices'
 import Drug from '../../domain/drug/Drug'
+import { IDrugValidator } from '../../domain/drug/IDrugValidator'
 import DrugAdapter from '../../infrastructure/drug/adapter/DrugAdapter'
 import HttpError from '../http/http_error'
 import { HttpResponse, makeHttpResponse } from '../http/http_response'
@@ -7,7 +8,8 @@ import RequestHandler from '../http/request_handler'
 import RequestWithUser from '../http/types/RequestWithUser'
 
 export const makeDrugRequestHandler = (
-	drugServices: IDrugServices
+	drugServices: IDrugServices,
+	drugValidator: IDrugValidator
 ): RequestHandler => {
 	return async (request: RequestWithUser): Promise<HttpResponse> => {
 		switch (request.method) {
@@ -47,6 +49,14 @@ export const makeDrugRequestHandler = (
 					rams,
 					administrationProceduresWithMethod
 				)
+
+				// Validar el fármaco
+				const validationErrors = await drugValidator.validate(drug)
+				if (validationErrors.length > 0) {
+				  throw new HttpError(400, 'Datos del fármaco inválidos')
+				  //falta manejar el error para que muestre si es que se necesita, sino ahí no mas
+				  //throw new HttpError(400, 'Datos del fármaco inválidos', validationErrors)
+				}
 
 				// Llamar al servicio para registrar el fármaco
 				const registeredDrug = await drugServices.registerDrug(
