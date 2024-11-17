@@ -10,6 +10,7 @@ import { makeGetDrugInformation } from './use_cases/get_drug_information'
 import { makeGetDrugsNames } from './use_cases/get_drugs_names'
 import { makeRegisterDrug } from './use_cases/register_drug'
 import { makeUpdateDrug } from './use_cases/update_drug'
+import { makeDeleteAdministrationProcedure } from './use_cases/delete_administration_procedure'
 
 export default class DrugServices implements IDrugServices {
 	constructor(
@@ -69,4 +70,8 @@ export default class DrugServices implements IDrugServices {
 	deleteDrug: (drugName: string) => Promise<Drug> = makeDeleteDrug(
 		this.drugRepository
 	)
+	deleteAdministrationProcedure: (
+        drugName: string,
+        method: string
+    ) => Promise<Drug> = makeDeleteAdministrationProcedure(this.drugRepository)
 }

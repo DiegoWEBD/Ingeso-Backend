@@ -32,4 +32,9 @@ export default interface IDrugServices {
 	) => Promise<Drug>
 
 	deleteDrug: (drugName: string) => Promise<Drug>
+	
+	deleteAdministrationProcedure: (
+        drugName: string,
+        method: string
+    ) => Promise<Drug>
 }
