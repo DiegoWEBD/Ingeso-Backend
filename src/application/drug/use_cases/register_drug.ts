@@ -1,21 +1,14 @@
 import AdministrationProcedure from '../../../domain/administration_procedure/AdministrationProcedure'
 import Drug from '../../../domain/drug/Drug'
 import DrugRepository from '../../../domain/drug/DrugRepository'
-import DrugClassification from '../../../domain/drug_classification/DrugClassification'
-import DrugClassificationRepository from '../../../domain/drug_classification/DrugClassificationRepository'
 import Ram from '../../../domain/ram/Ram'
 import AlreadyExistsError from '../../errors/already_exists'
-import NotFoundError from '../../errors/not_found'
 
-export const makeRegisterDrug = (
-	drugRepository: DrugRepository,
-	drugClassificationRepository: DrugClassificationRepository
-) => {
+export const makeRegisterDrug = (drugRepository: DrugRepository) => {
 	return async (
 		name: string,
 		presentation: string,
 		description: string,
-		classifications: Array<string>,
 		reactions: Array<string>,
 		administrationMethodsWithProcedure: Map<string, string>
 	): Promise<Drug> => {
@@ -23,20 +16,6 @@ export const makeRegisterDrug = (
 
 		if (existingDrug !== undefined) {
 			throw new AlreadyExistsError(`El fármaco '${name}' ya está registrado.`)
-		}
-
-		const drugClassifications: DrugClassification[] = []
-
-		for (let classification of classifications) {
-			const drugClassification =
-				await drugClassificationRepository.findByClassification(classification)
-
-			if (drugClassification === null) {
-				throw new NotFoundError(
-					`La clasificación '${classification}' no está registrada.`
-				)
-			}
-			drugClassifications.push(drugClassification)
 		}
 
 		const administrationProcedures: Array<AdministrationProcedure> = []
@@ -62,7 +41,6 @@ export const makeRegisterDrug = (
 			name,
 			presentation,
 			description,
-			drugClassifications,
 			rams,
 			administrationProcedures
 		)

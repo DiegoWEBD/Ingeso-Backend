@@ -1,12 +1,10 @@
-import DrugClassification from '../drug_classification/DrugClassification'
-import Ram from '../ram/Ram'
 import AdministrationProcedure from '../administration_procedure/AdministrationProcedure'
+import Ram from '../ram/Ram'
 export default class Drug {
 	constructor(
 		private name: string,
 		private presentation: string,
 		private description: string,
-		private drugClassifications: Array<DrugClassification>,
 		private rams: Array<Ram>,
 		private administrationProcedures: Array<AdministrationProcedure>
 	) {}
@@ -21,10 +19,6 @@ export default class Drug {
 
 	getPresentation(): string {
 		return this.presentation
-	}
-
-	getDrugClassifications(): Array<DrugClassification> {
-		return this.drugClassifications
 	}
 
 	getRams(): Array<Ram> {
@@ -44,10 +38,6 @@ export default class Drug {
 
 	setPresentation(newPresentation: string): void {
 		this.presentation = newPresentation
-	}
-
-	setDrugClassifications(newClassifications: Array<DrugClassification>): void {
-		this.drugClassifications = newClassifications
 	}
 
 	setRams(newRams: Array<Ram>): void {
