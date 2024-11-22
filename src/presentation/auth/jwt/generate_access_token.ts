@@ -13,6 +13,6 @@ export const generateAccessToken = (payload: TokenPayload): string => {
 	}
 
 	return jwt.sign(payload, jwtSecret, {
-		expiresIn: '15m',
+		expiresIn: '1d',
 	})
 }
