@@ -1,7 +1,7 @@
 import axios from 'axios'
-import jwt from 'jsonwebtoken'
 import IUserServices from '../../application/user/IUserServices'
 import UserAdapter from '../../infrastructure/user/adapter/UserAdapter'
+import { generateAccessToken } from '../auth/jwt/generate_access_token'
 import HttpError from '../http/http_error'
 import { HttpResponse, makeHttpResponse } from '../http/http_response'
 import RequestHandler from '../http/request_handler'
@@ -23,15 +23,6 @@ export const makeGoogleAuthenticationRequestHandler = (
 	return async (request: RequestWithUser): Promise<HttpResponse> => {
 		switch (request.method) {
 			case 'POST': {
-				const jwtSecret = process.env.JWT_SECRET
-
-				if (!jwtSecret) {
-					throw new HttpError(
-						500,
-						'JWT_SECRET no está definida en las variables de entorno.'
-					)
-				}
-
 				const userGoogleAccessToken = request.body.google_access_token
 
 				const googleTokenResponse = await axios.get(
@@ -63,16 +54,11 @@ export const makeGoogleAuthenticationRequestHandler = (
 				let user = await userServices.findUser(email)
 
 				if (user !== null) {
-					const accessToken = jwt.sign(
-						{
-							name: user.getName(),
-							email: user.getInstitutionalEmail(),
-						},
-						jwtSecret,
-						{
-							expiresIn: '24h',
-						}
-					)
+					const accessToken = generateAccessToken({
+						name: user.getName(),
+						email: user.getInstitutionalEmail(),
+					})
+
 					return makeHttpResponse(200, {
 						message: 'Inicio de sesión exitoso.',
 						access_token: accessToken,
@@ -82,16 +68,10 @@ export const makeGoogleAuthenticationRequestHandler = (
 
 				user = await userServices.registerStudent(email, name)
 
-				const accessToken = jwt.sign(
-					{
-						name: user.getName(),
-						email: user.getInstitutionalEmail(),
-					},
-					jwtSecret,
-					{
-						expiresIn: '7d',
-					}
-				)
+				const accessToken = generateAccessToken({
+					name: user.getName(),
+					email: user.getInstitutionalEmail(),
+				})
 
 				return makeHttpResponse(201, {
 					message: 'Estudiante registrado.',

@@ -4,7 +4,7 @@ import { makeGoogleAuthenticationRequestHandler } from './google_authentication_
 import RequestHandler from '../http/request_handler'
 import { Controller, makeController } from '../http/controller'
 
-export const makeAuthenticationRouter = (
+export const makeGoogleAuthenticationRouter = (
 	userServices: IUserServices
 ): Router => {
 	const requestHandler: RequestHandler =

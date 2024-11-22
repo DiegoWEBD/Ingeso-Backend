@@ -19,6 +19,7 @@ export default class Database {
 		this.pgp = pgPromise()
 		try {
 			this.db = this.pgp(connectionUrl)
+			console.log('success')
 		} catch (error) {
 			console.log('Database connection refused.')
 			throw new Error('Database could not connect.')

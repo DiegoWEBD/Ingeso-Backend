@@ -1,10 +1,11 @@
 import cors from 'cors'
 import express, { Express } from 'express'
 import ApplicationServices from '../application/ApplicationServices'
-import { makeAuthenticationMiddleware } from './authorization/authorization_middleware'
+import { makeAuthenticationMiddleware } from './auth/authorization/authorization_middleware'
 import { makeDrugRouter } from './drug/drug_router'
-import { makeAuthenticationRouter } from './google_auth/google_authentication_router'
+import { makeGoogleAuthenticationRouter } from './google_auth/google_authentication_router'
 import { makeUserRouter } from './user/user_router'
+import { makeAuthenticationRequestHandler } from './auth/authentication/authentication_request_handler'
 
 export default class Api {
 	private app: Express
@@ -44,8 +45,10 @@ export default class Api {
 
 		this.app.use(
 			'/auth',
-			makeAuthenticationRouter(this.applicationServices.getUserServices())
+			makeGoogleAuthenticationRouter(this.applicationServices.getUserServices())
 		)
+
+		this.app.use('/refresh', makeAuthenticationRequestHandler())
 
 		this.app.use(
 			'/drugs',

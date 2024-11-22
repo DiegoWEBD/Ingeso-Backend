@@ -21,6 +21,15 @@ create table if not exists drug(
     description text not null
 );
 
+create table if not exists favorite_drug(
+    drug_name text not null references drug(name)
+    on delete cascade,
+    user_institutional_email text not null
+    references app_user(institutional_email)
+    on delete cascade,
+    primary key (drug_name, user_institutional_email)
+);
+
 create table if not exists administration_procedure(
     drug_name text not null references drug(name)
     on delete cascade,

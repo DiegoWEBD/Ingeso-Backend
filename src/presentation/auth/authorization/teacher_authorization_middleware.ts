@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express'
-import { Middleware } from '../http/middleware'
-import RequestWithUser from '../http/types/RequestWithUser'
-import Teacher from '../../domain/teacher/Teacher'
+import Teacher from '../../../domain/teacher/Teacher'
+import { Middleware } from '../../http/middleware'
+import RequestWithUser from '../../http/types/RequestWithUser'
 
 export const teacherAuthorizationMiddleware: Middleware = (
 	req: RequestWithUser,

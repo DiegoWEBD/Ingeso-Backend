@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
-import IUserServices from '../../application/user/IUserServices'
-import { Middleware } from '../http/middleware'
+import IUserServices from '../../../application/user/IUserServices'
+import { Middleware } from '../../http/middleware'
 import jwt from 'jsonwebtoken'
-import RequestWithUser from '../http/types/RequestWithUser'
+import RequestWithUser from '../../http/types/RequestWithUser'
 
 export const makeAuthenticationMiddleware = (
 	userServices: IUserServices
