@@ -9,6 +9,7 @@ export const makeAuthenticationMiddleware = (
 ): Middleware => {
 	return (req: RequestWithUser, res: Response, next: NextFunction): void => {
 		const accessToken = req.headers.authorization
+		console.log(accessToken)
 
 		if (!accessToken) {
 			res.status(401).json({
