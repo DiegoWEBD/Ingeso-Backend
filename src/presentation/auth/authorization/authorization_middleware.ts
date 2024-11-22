@@ -9,7 +9,6 @@ export const makeAuthenticationMiddleware = (
 ): Middleware => {
 	return (req: RequestWithUser, res: Response, next: NextFunction): void => {
 		const accessToken = req.headers.authorization
-		console.log(accessToken)
 
 		if (!accessToken) {
 			res.status(401).json({
@@ -23,7 +22,7 @@ export const makeAuthenticationMiddleware = (
 		try {
 			payload = jwt.verify(
 				accessToken.split(' ')[1],
-				process.env.JWT_SECRET as string
+				process.env.ACCESS_TOKEN_SECRET as string
 			)
 		} catch (error) {
 			res.status(401).json({
