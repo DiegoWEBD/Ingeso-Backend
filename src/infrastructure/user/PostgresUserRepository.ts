@@ -47,4 +47,31 @@ export default class PostgresUserRepository implements UserRepository {
 			? new Student(userData.name, institutionalEmail)
 			: null
 	}
+
+	async getUserRefreshToken(user: User): Promise<string | null> {
+		const refreshToken: any | null = await this.database.queryOne(
+			'select * from refresh_token rt where rt.user_institutional_email = $1',
+			[user.getInstitutionalEmail()]
+		)
+
+		console.log(refreshToken)
+
+		return refreshToken === null ? null : 'Refresh token'
+	}
+
+	async registerRefreshToken(
+		user: User,
+		refreshToken: string,
+		expirationDate: Date
+	): Promise<void> {
+		await this.database.execute(
+			'delete from refresh_token rt where rt.user_institutional_email = $1',
+			[user.getInstitutionalEmail()]
+		)
+
+		await this.database.execute(
+			'insert into refresh_token(user_institutional_email, token, expires_at) values ($1, $2, $3)',
+			[user.getInstitutionalEmail(), refreshToken, expirationDate.toISOString()]
+		)
+	}
 }

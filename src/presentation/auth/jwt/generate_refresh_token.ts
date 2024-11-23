@@ -2,7 +2,10 @@ import HttpError from '../../http/http_error'
 import { TokenPayload } from './TokenPayload'
 import jwt from 'jsonwebtoken'
 
-export const generateRefreshToken = (payload: TokenPayload): string => {
+export const generateRefreshToken = (
+	payload: TokenPayload,
+	expiresIn: string
+): string => {
 	const jwtSecret = process.env.REFRESH_TOKEN_SECRET
 
 	if (!jwtSecret) {
@@ -13,6 +16,6 @@ export const generateRefreshToken = (payload: TokenPayload): string => {
 	}
 
 	return jwt.sign(payload, jwtSecret, {
-		expiresIn: '28d',
+		expiresIn,
 	})
 }

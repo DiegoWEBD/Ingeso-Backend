@@ -59,9 +59,14 @@ export const makeGoogleAuthenticationRequestHandler = (
 						email: user.getInstitutionalEmail(),
 					})
 
+					const refreshToken = await userServices.generateUserRefreshToken(
+						user.getInstitutionalEmail()
+					)
+
 					return makeHttpResponse(200, {
 						message: 'Inicio de sesión exitoso.',
 						access_token: accessToken,
+						refresh_token: refreshToken,
 						user: UserAdapter.ToJSON(user),
 					})
 				}
@@ -73,9 +78,14 @@ export const makeGoogleAuthenticationRequestHandler = (
 					email: user.getInstitutionalEmail(),
 				})
 
+				const refreshToken = await userServices.generateUserRefreshToken(
+					user.getInstitutionalEmail()
+				)
+
 				return makeHttpResponse(201, {
 					message: 'Estudiante registrado.',
 					access_token: accessToken,
+					refresh_token: refreshToken,
 					user: UserAdapter.ToJSON(user),
 				})
 			}

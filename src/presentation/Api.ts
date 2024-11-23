@@ -5,7 +5,7 @@ import { makeAuthenticationMiddleware } from './auth/authorization/authorization
 import { makeDrugRouter } from './drug/drug_router'
 import { makeGoogleAuthenticationRouter } from './google_auth/google_authentication_router'
 import { makeUserRouter } from './user/user_router'
-import { makeAuthenticationRequestHandler } from './auth/authentication/authentication_request_handler'
+import { makeRefreshTokenRouter } from './auth/authentication/refresh_token_router'
 
 export default class Api {
 	private app: Express
@@ -48,7 +48,10 @@ export default class Api {
 			makeGoogleAuthenticationRouter(this.applicationServices.getUserServices())
 		)
 
-		this.app.use('/refresh', makeAuthenticationRequestHandler())
+		this.app.use(
+			'/refresh',
+			makeRefreshTokenRouter(this.applicationServices.getUserServices())
+		)
 
 		this.app.use(
 			'/drugs',

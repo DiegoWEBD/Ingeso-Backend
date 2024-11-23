@@ -7,10 +7,20 @@ export default interface IUserServices {
 		institutionalEmail: string,
 		name: string
 	) => Promise<Student>
+
 	registerTeacher: (
 		institutionalEmail: string,
 		name: string
 	) => Promise<Teacher>
+
 	getUser: (institutionalEmail: string) => Promise<User>
+
 	findUser: (institutionalEmail: string) => Promise<User | null>
+
+	verifyUserRefreshToken: (
+		institutionalEmail: string,
+		refreshToken: string
+	) => Promise<void>
+
+	generateUserRefreshToken: (institutionalEmail: string) => Promise<string>
 }

@@ -15,6 +15,7 @@ export const makeController = (requestHandler: RequestHandler): Controller => {
 				res.status(httpResponse.code).json(httpResponse.data)
 			})
 			.catch((error: Error | ApplicationError | HttpError) => {
+				console.log(error)
 				let httpError: HttpError =
 					error instanceof HttpError
 						? error
