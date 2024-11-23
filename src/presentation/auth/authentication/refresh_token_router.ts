@@ -10,7 +10,7 @@ export const makeRefreshTokenRouter = (userServices: IUserServices): Router => {
 		makeRefreshTokenRequestHandler(userServices)
 	const refreshTokenController: Controller = makeController(requestHandler)
 
-	router.post('/', refreshTokenController)
+	router.get('/', refreshTokenController)
 
 	return router
 }

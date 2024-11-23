@@ -3,25 +3,26 @@ import RequestHandler from '../../http/request_handler'
 import { HttpResponse, makeHttpResponse } from '../../http/http_response'
 import HttpError from '../../http/http_error'
 import IUserServices from '../../../application/user/IUserServices'
+import jwt from 'jsonwebtoken'
 
 export const makeRefreshTokenRequestHandler = (
 	userServices: IUserServices
 ): RequestHandler => {
 	return async (request: Request): Promise<HttpResponse> => {
 		switch (request.method) {
-			case 'POST': {
+			case 'GET': {
 				const refreshToken = request.headers.authorization
-				const userEmail = request.body.institutional_email
-
-				if (!userEmail) {
-					throw new HttpError(400, 'Correo institucional no proporcionado.')
-				}
 
 				if (!refreshToken) {
 					throw new HttpError(401, 'Refresh token no proporcionado.')
 				}
+				const payload: any = jwt.verify(
+					refreshToken,
+					process.env.REFRESH_TOKEN_SECRET as string
+				)
+				console.log(payload)
 
-				await userServices.verifyUserRefreshToken(userEmail, refreshToken)
+				await userServices.verifyUserRefreshToken(payload.email, refreshToken)
 
 				return makeHttpResponse(200, {
 					message: 'Nuevo access token generado correctamente.',
