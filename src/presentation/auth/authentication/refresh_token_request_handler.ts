@@ -17,7 +17,7 @@ export const makeRefreshTokenRequestHandler = (
 					throw new HttpError(401, 'Refresh token no proporcionado.')
 				}
 				const payload: any = jwt.verify(
-					refreshToken,
+					refreshToken.split(' ')[1],
 					process.env.REFRESH_TOKEN_SECRET as string
 				)
 				console.log(payload)
