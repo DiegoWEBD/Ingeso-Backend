@@ -11,11 +11,10 @@ export type Controller = (request: RequestWithUser, response: Response) => void
 export const makeController = (requestHandler: RequestHandler): Controller => {
 	return (req: RequestWithUser, res: Response): void => {
 		requestHandler(req)
-			.then((httpResponse: HttpResponse) => {
+			.then((httpResponse: HttpResponse) =>
 				res.status(httpResponse.code).json(httpResponse.data)
-			})
+			)
 			.catch((error: Error | ApplicationError | HttpError) => {
-				console.log(error)
 				let httpError: HttpError =
 					error instanceof HttpError
 						? error

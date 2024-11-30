@@ -11,8 +11,8 @@ export const makeDrugRouter = (drugServices: IDrugServices): Router => {
 	const router = Router()
 
 	router.get('/', drugController)
+	router.post('/', teacherAuthorizationMiddleware, drugController)
 	router.get('/:name', drugController)
-	router.post('/:name', teacherAuthorizationMiddleware, drugController)
 	router.put('/:name', teacherAuthorizationMiddleware, drugController)
 	router.delete('/:name', teacherAuthorizationMiddleware, drugController)
 

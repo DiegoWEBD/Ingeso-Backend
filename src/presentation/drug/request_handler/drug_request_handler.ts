@@ -14,7 +14,7 @@ export const makeDrugRequestHandler = (
 		switch (request.method) {
 			case 'GET': {
 				const getRequest = makeGetDrugRequest(drugServices)
-				return getRequest(request)
+				return await getRequest(request)
 			}
 
 			case 'POST': {
@@ -27,12 +27,12 @@ export const makeDrugRequestHandler = (
 					presentation,
 					description,
 					rams,
-					administration_procedures_with_method,
+					administration_procedures,
 				} = request.body
 
 				const administrationProceduresMap = new Map<string, string>()
 
-				administration_procedures_with_method.forEach((p: any) => {
+				administration_procedures.forEach((p: any) => {
 					administrationProceduresMap.set(p.method, p.procedure)
 				})
 
@@ -50,15 +50,20 @@ export const makeDrugRequestHandler = (
 
 			case 'PUT': {
 				const updateRequest = makePutDrugRequest(drugServices)
-				return updateRequest(request)
+				return await updateRequest(request)
 			}
 
 			case 'DELETE': {
 				if (!request.params.name) {
-					throw new HttpError(400, 'El nombre de fármaco no fue proporcionado.')
+					throw new HttpError(
+						400,
+						'El nombre de fármaco no fue proporcionado.'
+					)
 				}
 
-				const deletedDrug = await drugServices.deleteDrug(request.params.name)
+				const deletedDrug = await drugServices.deleteDrug(
+					request.params.name
+				)
 
 				return makeHttpResponse(200, {
 					message: 'Fármaco eliminado correctamente.',
@@ -67,7 +72,10 @@ export const makeDrugRequestHandler = (
 			}
 
 			default: {
-				throw new HttpError(405, `Método ${request.method} no permitido.`)
+				throw new HttpError(
+					405,
+					`Método ${request.method} no permitido.`
+				)
 			}
 		}
 	}

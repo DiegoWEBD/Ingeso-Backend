@@ -23,7 +23,7 @@ create table if not exists drug(
 
 create table if not exists favorite_drug(
     drug_name text not null references drug(name)
-    on delete cascade,
+    on delete cascade on update cascade,
     user_institutional_email text not null
     references app_user(institutional_email)
     on delete cascade,
@@ -32,7 +32,7 @@ create table if not exists favorite_drug(
 
 create table if not exists administration_procedure(
     drug_name text not null references drug(name)
-    on delete cascade,
+    on delete cascade on update cascade,
     method text not null,
     procedure text not null,
     primary key (drug_name, method)
@@ -40,7 +40,7 @@ create table if not exists administration_procedure(
 
 create table if not exists ram(
     drug_name text not null references drug(name)
-    on delete cascade,
+    on delete cascade on update cascade,
     reaction text not null
 );
 

@@ -9,7 +9,10 @@ export const makePutDrugRequest = (
 ): RequestHandler => {
 	return async (request: RequestWithUser): Promise<HttpResponse> => {
 		if (!request.params.name) {
-			throw new HttpError(400, 'El nombre de fármaco no fue proporcionado.')
+			throw new HttpError(
+				400,
+				'El nombre de fármaco no fue proporcionado.'
+			)
 		}
 
 		const data = request.body
@@ -20,7 +23,7 @@ export const makePutDrugRequest = (
 			administrationProceduresMap.set(p.method, p.procedure)
 		})
 
-		const updatedDrug = drugServices.updateDrug(
+		const updatedDrug = await drugServices.updateDrug(
 			request.params.name,
 			data.new_name,
 			data.new_presentation,
