@@ -6,6 +6,7 @@ import { makeDrugRouter } from './drug/drug_router'
 import { makeGoogleAuthenticationRouter } from './google_auth/google_authentication_router'
 import { makeUserRouter } from './user/user_router'
 import { makeRefreshTokenRouter } from './auth/authentication/refresh_token_router'
+import { makeFavoritesRouter } from './drug/favorites_router'
 
 export default class Api {
 	private app: Express
@@ -64,6 +65,12 @@ export default class Api {
 			authenticationMiddleware,
 			makeUserRouter(this.applicationServices.getUserServices())
 		)
+
+		this.app.use(
+            '/favorites',
+            authenticationMiddleware,
+            makeFavoritesRouter(this.applicationServices.getUserServices())
+        );
 
 		this.app.listen(port, () => {
 			console.log(`Servidor corriendo en http://localhost:${port}`)

@@ -74,4 +74,30 @@ export default class PostgresUserRepository implements UserRepository {
 			[user.getInstitutionalEmail(), refreshToken, expirationDate.toISOString()]
 		)
 	}
+
+	async addFavorite(drugName: string, userEmail: string): Promise<void> {
+        const query = `
+            INSERT INTO favorite_drug (drug_name, user_institutional_email)
+            VALUES ($1, $2)
+            ON CONFLICT DO NOTHING
+        `;
+        await this.database.execute(query, [drugName, userEmail]);
+    }
+
+    async removeFavorite(drugName: string, userEmail: string): Promise<void> {
+        const query = `
+            DELETE FROM favorite_drug
+            WHERE drug_name = $1 AND user_institutional_email = $2
+        `;
+        await this.database.execute(query, [drugName, userEmail]);
+    }
+
+    async isFavorite(drugName: string, userEmail: string): Promise<boolean> {
+        const query = `
+            SELECT 1 FROM favorite_drug
+            WHERE drug_name = $1 AND user_institutional_email = $2
+        `;
+        const result = await this.database.queryOne(query, [drugName, userEmail]);
+        return result.rowCount > 0;
+    }
 }
