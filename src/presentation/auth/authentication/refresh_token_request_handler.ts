@@ -20,9 +20,11 @@ export const makeRefreshTokenRequestHandler = (
 					refreshToken.split(' ')[1],
 					process.env.REFRESH_TOKEN_SECRET as string
 				)
-				console.log(payload)
 
-				await userServices.verifyUserRefreshToken(payload.email, refreshToken)
+				await userServices.verifyUserRefreshToken(
+					payload.email,
+					refreshToken
+				)
 
 				return makeHttpResponse(200, {
 					message: 'Nuevo access token generado correctamente.',
@@ -31,7 +33,10 @@ export const makeRefreshTokenRequestHandler = (
 			}
 
 			default: {
-				throw new HttpError(405, `Método ${request.method} no permitido.`)
+				throw new HttpError(
+					405,
+					`Método ${request.method} no permitido.`
+				)
 			}
 		}
 	}

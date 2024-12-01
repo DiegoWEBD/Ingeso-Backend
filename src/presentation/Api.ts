@@ -45,7 +45,9 @@ export default class Api {
 
 		this.app.use(
 			'/auth',
-			makeGoogleAuthenticationRouter(this.applicationServices.getUserServices())
+			makeGoogleAuthenticationRouter(
+				this.applicationServices.getUserServices()
+			)
 		)
 
 		this.app.use(

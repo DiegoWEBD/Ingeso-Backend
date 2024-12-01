@@ -14,8 +14,10 @@ export const makeRegisterDrug = (drugRepository: DrugRepository) => {
 	): Promise<Drug> => {
 		const existingDrug = await drugRepository.findByName(name)
 
-		if (existingDrug !== undefined) {
-			throw new AlreadyExistsError(`El fármaco '${name}' ya está registrado.`)
+		if (existingDrug !== null) {
+			throw new AlreadyExistsError(
+				`El fármaco '${name}' ya está registrado.`
+			)
 		}
 
 		const administrationProcedures: Array<AdministrationProcedure> = []
