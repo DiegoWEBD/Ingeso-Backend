@@ -19,16 +19,16 @@ export const makePutDrugRequest = (
 
 		const administrationProceduresMap = new Map<string, string>()
 
-		data.new_administration_procedures?.forEach((p: any) => {
+		data.administration_procedures?.forEach((p: any) => {
 			administrationProceduresMap.set(p.method, p.procedure)
 		})
 
 		const updatedDrug = await drugServices.updateDrug(
 			request.params.name,
-			data.new_name,
-			data.new_presentation,
-			data.new_description,
-			data.new_reactions,
+			data.name,
+			data.presentation,
+			data.description,
+			data.rams.map((ram: any) => ram.reaction),
 			administrationProceduresMap
 		)
 
