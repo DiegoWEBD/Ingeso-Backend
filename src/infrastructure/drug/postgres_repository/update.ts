@@ -3,7 +3,10 @@ import Drug from '../../../domain/drug/Drug'
 import Database from '../../../presentation/database/Database'
 
 export const makeUpdate = (database: Database) => {
-	return async (name: string, newValues: Drug): Promise<void> => {
+	const updateAdministrationProcedures = async (
+		name: string,
+		newValues: Drug
+	) => {
 		let currentAdministrationProcedures = await database.queryMany(
 			'select * from drug d ' +
 				'left join administration_procedure ap ' +
@@ -19,10 +22,8 @@ export const makeUpdate = (database: Database) => {
 			})
 		)
 
-		//console.log('Current\n', currentAdministrationProcedures)
 		const newAdministrationProcedures =
 			newValues.getAdministrationProcedures()
-		//console.log('New\n', newAdministrationProcedures)
 
 		const administrationProceduresToDelete: any[] =
 			currentAdministrationProcedures.filter(
@@ -32,8 +33,6 @@ export const makeUpdate = (database: Database) => {
 							ap.getMethod() === administrationProcedure.method
 					)
 			)
-
-		//console.log('To delete\n', administrationProceduresToDelete)
 
 		const administrationProceduresToUpdate: AdministrationProcedure[] = []
 		const administrationProceduresToCreate: AdministrationProcedure[] =
@@ -51,9 +50,6 @@ export const makeUpdate = (database: Database) => {
 				}
 				return true
 			})
-
-		//console.log('To update\n', administrationProceduresToUpdate)
-		//console.log('To create\n', administrationProceduresToCreate)
 
 		for (let administrationProcedure of administrationProceduresToDelete) {
 			await database.execute(
@@ -83,7 +79,18 @@ export const makeUpdate = (database: Database) => {
 				]
 			)
 		}
+	}
 
+	const updateRams = async (name: string, newValues: Drug) => {
+		await database.execute(
+			'update ram set reaction = $1 where drug_name = $2',
+			[newValues.getRams()[0].getReaction(), name]
+		)
+	}
+
+	return async (name: string, newValues: Drug): Promise<void> => {
+		await updateAdministrationProcedures(name, newValues)
+		await updateRams(name, newValues)
 		await database.execute(
 			'update drug set name = $1, presentation = $2, description = $3 where name = $4',
 			[

@@ -41,7 +41,7 @@ export const makeDrugRequestHandler = (
 					name,
 					presentation,
 					description,
-					rams,
+					rams.map((ram: any) => ram.reaction),
 					administrationProceduresMap
 				)
 
