@@ -57,7 +57,7 @@ export default class Api {
 
 		this.app.use(
 			'/drugs',
-			//authenticationMiddleware,
+			authenticationMiddleware,
 			makeDrugRouter(this.applicationServices.getDrugServices())
 		)
 
