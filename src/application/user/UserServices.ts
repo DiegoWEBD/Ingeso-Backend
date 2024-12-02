@@ -36,6 +36,19 @@ export default class UserServices implements IUserServices {
 		refreshToken: string
 	) => Promise<void> = makeVerifyUserRefreshToken(this.userRepository)
 
+
+	async addFavorite(drugName: string, userEmail: string): Promise<void> {
+        await this.userRepository.addFavorite(drugName, userEmail);
+    }
+
+    async removeFavorite(drugName: string, userEmail: string): Promise<void> {
+        await this.userRepository.removeFavorite(drugName, userEmail);
+    }
+
+    async isFavorite(drugName: string, userEmail: string): Promise<boolean> {
+        return await this.userRepository.isFavorite(drugName, userEmail);
+    }
+
 	generateUserRefreshToken: (institutionalEmail: string) => Promise<string> =
 		makeGenerateUserRefreshToken(this.userRepository)
 }
