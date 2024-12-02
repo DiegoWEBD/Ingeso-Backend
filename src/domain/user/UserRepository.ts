@@ -9,4 +9,8 @@ export default interface UserRepository {
 		refreshToken: string,
 		expirationDate: Date
 	) => Promise<void>
+
+	addFavorite(drugName: string, userEmail: string): Promise<void>;
+    removeFavorite(drugName: string, userEmail: string): Promise<void>;
+    isFavorite(drugName: string, userEmail: string): Promise<boolean>;
 }
