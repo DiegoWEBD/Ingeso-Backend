@@ -5,19 +5,21 @@ import { makeAddAdministrationProcedure } from './use_cases/add_administration_p
 import { makeAddRamToDrug } from './use_cases/add_ram_to_drug'
 import { makeDeleteDrug } from './use_cases/delete_drug'
 import { makeGetDrugInformation } from './use_cases/get_drug_information'
-import { makeGetDrugsNames } from './use_cases/get_drugs_names'
+import { makeGetDrugsInitialData } from './use_cases/get_drugs_initial_data'
 import { makeRegisterDrug } from './use_cases/register_drug'
 import { makeUpdateDrug } from './use_cases/update_drug'
 import { makeDeleteAdministrationProcedure } from './use_cases/delete_administration_procedure'
+import DrugInitialData from './DrugInitialData'
 
 export default class DrugServices implements IDrugServices {
 	constructor(private drugRepository: DrugRepository) {}
 
-	getDrugInformation: (name: string) => Promise<Drug> = makeGetDrugInformation(
-		this.drugRepository
-	)
+	getDrugInformation: (name: string) => Promise<Drug> =
+		makeGetDrugInformation(this.drugRepository)
 
-	getDrugsNames: () => Promise<Array<string>> = makeGetDrugsNames(
+	getDrugsInitialData: (
+		userEmail: string
+	) => Promise<Array<DrugInitialData>> = makeGetDrugsInitialData(
 		this.drugRepository
 	)
 
@@ -50,7 +52,7 @@ export default class DrugServices implements IDrugServices {
 		this.drugRepository
 	)
 	deleteAdministrationProcedure: (
-        drugName: string,
-        method: string
-    ) => Promise<Drug> = makeDeleteAdministrationProcedure(this.drugRepository)
+		drugName: string,
+		method: string
+	) => Promise<Drug> = makeDeleteAdministrationProcedure(this.drugRepository)
 }
