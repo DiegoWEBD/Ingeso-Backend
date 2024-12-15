@@ -39,9 +39,10 @@ export const makeAuthenticationMiddleware = (
 				next()
 			})
 			.catch((error) => {
-				res
-					.status(500)
-					.json({ message: 'Error al obtener la sesión del usuario.', error })
+				res.status(500).json({
+					message: 'Error al obtener la sesión del usuario.',
+					error,
+				})
 			})
 	}
 }
