@@ -11,12 +11,6 @@ export default interface IDrugServices {
 		rams: Array<string>,
 		administrationProceduresWithMethod: Map<string, string>
 	) => Promise<Drug>
-	addRamToDrug: (drugName: string, reaction: string) => Promise<Drug>
-	addAdministrationProcedure: (
-		drugName: string,
-		method: string,
-		procedure: string
-	) => Promise<Drug>
 	updateDrug: (
 		name: string,
 		newName?: string,
@@ -28,8 +22,4 @@ export default interface IDrugServices {
 
 	deleteDrug: (drugName: string) => Promise<Drug>
 
-	deleteAdministrationProcedure: (
-		drugName: string,
-		method: string
-	) => Promise<Drug>
 }
