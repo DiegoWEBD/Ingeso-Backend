@@ -1,10 +1,19 @@
 export const makeGetEmailRole = () => {
 	return (institutionalEmail: string): string | undefined => {
-		const temporalWhitelist = new Set<string>([
-			'diego.maldonado.1alsf@gmail.com',
+		const teacherWhiteList = new Set<string>([
+			'diego.maldonado@alumnos.ucn.cl',
+			'anibal.gonzalez@alumnos.ucn.cl',
+			'sebastian.robles02@alumnos.ucn.cl',
 		])
 
-		if (temporalWhitelist.has(institutionalEmail)) return 'teacher'
+		const studentWhiteList = new Set<string>([
+			'diego.maldonado.1alsf@gmail.com',
+			'anibal.gonzalez.lsf@gmail.com',
+			'roblessebastian748@gmail.com',
+		])
+
+		if (teacherWhiteList.has(institutionalEmail)) return 'teacher'
+		if (studentWhiteList.has(institutionalEmail)) return 'student'
 
 		const domain = institutionalEmail.split('@')[1]
 
