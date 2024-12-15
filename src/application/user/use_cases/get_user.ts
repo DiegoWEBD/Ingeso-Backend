@@ -9,7 +9,9 @@ export const makeGetUser = (userRepository: UserRepository) => {
 		)
 
 		if (user === null) {
-			throw new NotFoundError(`Correo ${institutionalEmail} no registrado.`)
+			throw new NotFoundError(
+				`Correo ${institutionalEmail} no registrado.`
+			)
 		}
 
 		return user

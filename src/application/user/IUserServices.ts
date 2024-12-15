@@ -24,7 +24,9 @@ export default interface IUserServices {
 
 	generateUserRefreshToken: (institutionalEmail: string) => Promise<string>
 
-	addFavorite(drugName: string, userEmail: string): Promise<void>;
-    removeFavorite(drugName: string, userEmail: string): Promise<void>;
-    isFavorite(drugName: string, userEmail: string): Promise<boolean>;
+	getEmailRole: (institutionalEmail: string) => string | undefined
+
+	addFavorite(drugName: string, userEmail: string): Promise<void>
+	removeFavorite(drugName: string, userEmail: string): Promise<void>
+	isFavorite(drugName: string, userEmail: string): Promise<boolean>
 }

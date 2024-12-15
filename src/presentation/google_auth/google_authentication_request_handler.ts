@@ -1,6 +1,7 @@
 import axios from 'axios'
 import IUserServices from '../../application/user/IUserServices'
-import UserAdapter from '../../infrastructure/user/adapter/UserAdapter'
+import StudentJSONAdapter from '../../infrastructure/student/StudentJSONAdapter'
+import TeacherJSONAdapter from '../../infrastructure/teacher/TeacherJSONAdapter'
 import { generateAccessToken } from '../auth/jwt/generate_access_token'
 import HttpError from '../http/http_error'
 import { HttpResponse, makeHttpResponse } from '../http/http_response'
@@ -10,16 +11,6 @@ import RequestWithUser from '../http/types/RequestWithUser'
 export const makeGoogleAuthenticationRequestHandler = (
 	userServices: IUserServices
 ): RequestHandler => {
-	const isInstitutionalEmail = (email: string): boolean => {
-		const domain = email.split('@')[1]
-
-		return (
-			domain === 'ucn.cl' ||
-			domain === 'alumnos.ucn.cl' ||
-			domain === 'ce.ucn.cl'
-		)
-	}
-
 	return async (request: RequestWithUser): Promise<HttpResponse> => {
 		switch (request.method) {
 			case 'POST': {
@@ -29,7 +20,10 @@ export const makeGoogleAuthenticationRequestHandler = (
 					`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${userGoogleAccessToken}`
 				)
 
-				if (googleTokenResponse.data.aud !== process.env.GOOGLE_CLIENT_ID) {
+				if (
+					googleTokenResponse.data.aud !==
+					process.env.GOOGLE_CLIENT_ID
+				) {
 					throw new HttpError(401, 'Token de google inválido.')
 				}
 
@@ -43,11 +37,21 @@ export const makeGoogleAuthenticationRequestHandler = (
 				)
 
 				const { name, email } = userInfoResponse.data
+				const emailRole = userServices.getEmailRole(email)
 
-				if (!isInstitutionalEmail(email)) {
+				if (!emailRole) {
 					throw new HttpError(
 						401,
 						'Correo inválido, ingrese con su correo institucional UCN.'
+					)
+				}
+
+				const userSelectedRole = request.body.role
+
+				if (userSelectedRole !== emailRole) {
+					throw new HttpError(
+						403,
+						'Tu correo institucional no tiene los permisos suficientes para crear una cuenta de este tipo'
 					)
 				}
 
@@ -59,39 +63,53 @@ export const makeGoogleAuthenticationRequestHandler = (
 						email: user.getInstitutionalEmail(),
 					})
 
-					const refreshToken = await userServices.generateUserRefreshToken(
-						user.getInstitutionalEmail()
-					)
+					const refreshToken =
+						await userServices.generateUserRefreshToken(
+							user.getInstitutionalEmail()
+						)
 
 					return makeHttpResponse(200, {
 						message: 'Inicio de sesión exitoso.',
 						access_token: accessToken,
 						refresh_token: refreshToken,
-						user: UserAdapter.ToJSON(user),
+						user:
+							emailRole === 'teacher'
+								? new TeacherJSONAdapter(user)
+								: new StudentJSONAdapter(user),
 					})
 				}
 
-				user = await userServices.registerStudent(email, name)
+				user =
+					emailRole === 'teacher'
+						? await userServices.registerTeacher(email, name)
+						: await userServices.registerStudent(email, name)
 
 				const accessToken = generateAccessToken({
 					name: user.getName(),
 					email: user.getInstitutionalEmail(),
 				})
 
-				const refreshToken = await userServices.generateUserRefreshToken(
-					user.getInstitutionalEmail()
-				)
+				const refreshToken =
+					await userServices.generateUserRefreshToken(
+						user.getInstitutionalEmail()
+					)
 
 				return makeHttpResponse(201, {
 					message: 'Estudiante registrado.',
 					access_token: accessToken,
 					refresh_token: refreshToken,
-					user: UserAdapter.ToJSON(user),
+					user:
+						emailRole === 'teacher'
+							? new TeacherJSONAdapter(user)
+							: new StudentJSONAdapter(user),
 				})
 			}
 
 			default: {
-				throw new HttpError(405, `Método ${request.method} no permitido.`)
+				throw new HttpError(
+					405,
+					`Método ${request.method} no permitido.`
+				)
 			}
 		}
 	}
