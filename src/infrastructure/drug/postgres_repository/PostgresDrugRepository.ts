@@ -30,12 +30,12 @@ export default class PostgresDrugRepository implements DrugRepository {
             SELECT count(*) FROM favorite_drug
             WHERE drug_name = $1 AND user_institutional_email = $2
         `
-		//console.log(drugName)
+
 		const result = await this.database.queryOne(query, [
 			drugName,
 			userEmail,
 		])
-		//console.log(result)
+
 		return result.count > 0
 	}
 }
