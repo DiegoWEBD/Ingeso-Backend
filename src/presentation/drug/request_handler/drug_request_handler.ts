@@ -18,9 +18,7 @@ export const makeDrugRequestHandler = (
 			}
 
 			case 'POST': {
-				if (!request.body) {
-					throw new HttpError(400, 'Faltan datos del fármaco.')
-				}
+				console.log(request.files)
 
 				const {
 					name,
