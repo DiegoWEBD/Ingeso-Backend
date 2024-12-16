@@ -8,6 +8,9 @@ import multer from 'multer'
 import path from 'path'
 import XLSX from 'xlsx'
 import fs from 'fs'
+import RequestWithUser from '../http/types/RequestWithUser'
+import User from '../../domain/user/User'
+import UnauthorizedError from '../../application/errors/unauthorized'
 
 const readDataFromExcel = (filePath: string) => {
 	const readExcel = () => {
@@ -94,18 +97,32 @@ export const makeDrugRouter = (drugServices: IDrugServices): Router => {
 
 	const upload = multer({ storage })
 
-	router.post('/upload', upload.single('file'), async (req, res) => {
-		if (!req.file) {
-			res.status(400).json({
-				message: 'El archivo no fue proporcionado.',
-			})
-			return
-		}
+	router.post(
+		'/upload',
+		teacherAuthorizationMiddleware,
+		upload.single('file'),
+		async (req: RequestWithUser, res) => {
+			if (!req.file) {
+				res.status(400).json({
+					message: 'El archivo no fue proporcionado.',
+				})
+				return
+			}
+			if (!req.user) {
+				throw new UnauthorizedError('Usuario no autenticado.')
+			}
 
-		const data = readDataFromExcel(`uploads/${req.file.filename}`)
-		await loadDataToDatabase(data, drugServices)
-		res.status(200).json({ message: 'Archivo subido correctamente.' })
-	})
+			const data = readDataFromExcel(`uploads/${req.file.filename}`)
+			await loadDataToDatabase(data, drugServices)
+			const drugsNames = await drugServices.getDrugsInitialData(
+				req.user.getInstitutionalEmail()
+			)
+			res.status(200).json({
+				message: 'Archivo subido correctamente.',
+				drugs_names: drugsNames,
+			})
+		}
+	)
 
 	router.get('/', drugController)
 	router.post('/', teacherAuthorizationMiddleware, drugController)
