@@ -18,8 +18,6 @@ export const makeDrugRequestHandler = (
 			}
 
 			case 'POST': {
-				console.log(request.files)
-
 				const {
 					name,
 					presentation,
