@@ -4,6 +4,7 @@ export const makeGetEmailRole = () => {
 			'diego.maldonado@alumnos.ucn.cl',
 			'anibal.gonzalez@alumnos.ucn.cl',
 			'sebastian.robles02@alumnos.ucn.cl',
+			'matias.cortes09@alumnos.ucn.cl',
 		])
 
 		const studentWhiteList = new Set<string>([
