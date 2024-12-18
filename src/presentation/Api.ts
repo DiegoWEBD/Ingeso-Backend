@@ -45,34 +45,34 @@ export default class Api {
 		)
 
 		this.app.use(
-			'/auth',
+			'/api/auth',
 			makeGoogleAuthenticationRouter(
 				this.applicationServices.getUserServices()
 			)
 		)
 
 		this.app.use(
-			'/refresh',
+			'/api/refresh',
 			makeRefreshTokenRouter(this.applicationServices.getUserServices())
 		)
 
 		this.app.use(
-			'/drugs',
+			'/api/drugs',
 			authenticationMiddleware,
 			makeDrugRouter(this.applicationServices.getDrugServices())
 		)
 
 		this.app.use(
-			'/user',
+			'/api/user',
 			authenticationMiddleware,
 			makeUserRouter(this.applicationServices.getUserServices())
 		)
 
 		this.app.use(
-            '/favorites',
-            authenticationMiddleware,
-            makeFavoritesRouter(this.applicationServices.getUserServices())
-        );
+			'/api/favorites',
+			authenticationMiddleware,
+			makeFavoritesRouter(this.applicationServices.getUserServices())
+		)
 
 		this.app.listen(port, () => {
 			console.log(`Servidor corriendo en http://localhost:${port}`)
