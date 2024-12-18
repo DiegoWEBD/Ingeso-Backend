@@ -20,7 +20,7 @@ export default class Api {
 	}
 
 	run(port: number | string) {
-		this.app.get('/', (_, res) => {
+		this.app.get('/api', (_, res) => {
 			res.status(200).json({
 				message: 'Api de la aplicación "Guía de Farmacología".',
 				endpoints: [
