@@ -4,6 +4,7 @@ import { HttpResponse, makeHttpResponse } from '../../http/http_response'
 import HttpError from '../../http/http_error'
 import IUserServices from '../../../application/user/IUserServices'
 import jwt from 'jsonwebtoken'
+import { generateAccessToken } from '../jwt/generate_access_token'
 
 export const makeRefreshTokenRequestHandler = (
 	userServices: IUserServices
@@ -23,12 +24,17 @@ export const makeRefreshTokenRequestHandler = (
 
 				await userServices.verifyUserRefreshToken(
 					payload.email,
-					refreshToken
+					refreshToken.split(' ')[1]
 				)
+
+				const newAccessToken = generateAccessToken({
+					name: payload.name,
+					email: payload.email,
+				})
 
 				return makeHttpResponse(200, {
 					message: 'Nuevo access token generado correctamente.',
-					access_token: '',
+					access_token: newAccessToken,
 				})
 			}
 

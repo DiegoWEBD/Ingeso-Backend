@@ -13,7 +13,9 @@ export const makeVerifyUserRefreshToken = (userRepository: UserRepository) => {
 		)
 
 		if (user === null) {
-			throw new NotFoundError(`Correo ${institutionalEmail} no registrado.`)
+			throw new NotFoundError(
+				`Correo ${institutionalEmail} no registrado.`
+			)
 		}
 
 		const registeredRefreshToken: string | null =
