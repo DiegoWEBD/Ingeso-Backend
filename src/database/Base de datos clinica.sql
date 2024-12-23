@@ -61,3 +61,11 @@ create table adverse_reaction (
     constraint fk_drug1 foreign key (drug_name_1) references drug (name),
     constraint fk_drug2 foreign key (drug_name_2) references drug (name)
 );
+
+-- Tabla 'allowed_teacher'
+create table allowed_teacher (
+    institutional_email text primary key
+        references teacher(institutional_email)
+        on delete cascade,
+    date_added timestamp not null default now()
+);

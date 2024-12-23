@@ -105,4 +105,31 @@ export default class PostgresUserRepository implements UserRepository {
 		])
 		return result.rowCount > 0
 	}
+
+	async addAllowedTeacher(teacherEmail: string): Promise<void> {
+		const query = `
+			INSERT INTO allowed_teacher (institutional_email)
+			VALUES ($1)
+			ON CONFLICT DO NOTHING
+		`
+		await this.database.execute(query, [teacherEmail])
+	}
+
+	async removeAllowedTeacher(teacherEmail: string): Promise<void> {
+		const query = `
+			DELETE FROM allowed_teacher
+			WHERE institutional_email = $1
+		`
+		await this.database.execute(query, [teacherEmail])
+	}
+
+	async checkTeacherAllowed(teacherEmail: string): Promise<boolean> {
+		const query = `
+			SELECT 1 FROM allowed_teacher
+			WHERE institutional_email = $1
+		`
+		const result = await this.database.queryOne(query, [teacherEmail])
+		//console.log('Resultado de checkTeacherAllowed:', result)
+		return result !== null
+	}
 }

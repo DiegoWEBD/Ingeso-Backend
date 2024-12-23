@@ -20,10 +20,7 @@ export const makeGoogleAuthenticationRequestHandler = (
 					`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${userGoogleAccessToken}`
 				)
 
-				if (
-					googleTokenResponse.data.aud !==
-					process.env.GOOGLE_CLIENT_ID
-				) {
+				if (googleTokenResponse.data.aud !== process.env.GOOGLE_CLIENT_ID) {
 					throw new HttpError(401, 'Token de google inválido.')
 				}
 
@@ -45,6 +42,16 @@ export const makeGoogleAuthenticationRequestHandler = (
 						'Correo inválido, ingrese con su correo institucional UCN.'
 					)
 				}
+				// Nuevo: si es "teacher" verificar si está en la tabla 'allowed_teacher'
+				if (emailRole === 'teacher') {
+					const isAllowedTeacher = await userServices.checkTeacherAllowed(email)
+					if (!isAllowedTeacher) {
+						throw new HttpError(
+							403,
+							'Tu cuenta de docente UCN no tiene permisos para ingresar. Solicita permiso al administrador de la página'
+						)
+					}
+				}
 
 				const userSelectedRole = request.body.role
 
@@ -63,10 +70,9 @@ export const makeGoogleAuthenticationRequestHandler = (
 						email: user.getInstitutionalEmail(),
 					})
 
-					const refreshToken =
-						await userServices.generateUserRefreshToken(
-							user.getInstitutionalEmail()
-						)
+					const refreshToken = await userServices.generateUserRefreshToken(
+						user.getInstitutionalEmail()
+					)
 
 					return makeHttpResponse(200, {
 						message: 'Inicio de sesión exitoso.',
@@ -89,10 +95,9 @@ export const makeGoogleAuthenticationRequestHandler = (
 					email: user.getInstitutionalEmail(),
 				})
 
-				const refreshToken =
-					await userServices.generateUserRefreshToken(
-						user.getInstitutionalEmail()
-					)
+				const refreshToken = await userServices.generateUserRefreshToken(
+					user.getInstitutionalEmail()
+				)
 
 				return makeHttpResponse(201, {
 					message: 'Estudiante registrado.',
@@ -106,10 +111,7 @@ export const makeGoogleAuthenticationRequestHandler = (
 			}
 
 			default: {
-				throw new HttpError(
-					405,
-					`Método ${request.method} no permitido.`
-				)
+				throw new HttpError(405, `Método ${request.method} no permitido.`)
 			}
 		}
 	}
