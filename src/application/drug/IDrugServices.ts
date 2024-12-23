@@ -2,6 +2,7 @@ import Drug from '../../domain/drug/Drug'
 import DrugInitialData from './DrugInitialData'
 
 export default interface IDrugServices {
+	findDrug: (name: string) => Promise<Drug | null>
 	getDrugInformation: (name: string) => Promise<Drug>
 	getDrugsInitialData: (userEmail: string) => Promise<Array<DrugInitialData>>
 	registerDrug: (
@@ -21,5 +22,4 @@ export default interface IDrugServices {
 	) => Promise<Drug>
 
 	deleteDrug: (drugName: string) => Promise<Drug>
-
 }

@@ -7,6 +7,7 @@ import { makeGetDrugsInitialData } from './use_cases/get_drugs_initial_data'
 import { makeRegisterDrug } from './use_cases/register_drug'
 import { makeUpdateDrug } from './use_cases/update_drug'
 import DrugInitialData from './DrugInitialData'
+import { makeFindDrug } from './use_cases/find_drug'
 
 export default class DrugServices implements IDrugServices {
 	constructor(private drugRepository: DrugRepository) {}
@@ -36,7 +37,12 @@ export default class DrugServices implements IDrugServices {
 		newReactions?: Array<string>,
 		newAdministrationProcedures?: Map<string, string>
 	) => Promise<Drug> = makeUpdateDrug(this.drugRepository)
+
 	deleteDrug: (drugName: string) => Promise<Drug> = makeDeleteDrug(
+		this.drugRepository
+	)
+
+	findDrug: (name: string) => Promise<Drug | null> = makeFindDrug(
 		this.drugRepository
 	)
 }
