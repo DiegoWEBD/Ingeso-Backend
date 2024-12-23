@@ -29,4 +29,9 @@ export default interface IUserServices {
 	addFavorite(drugName: string, userEmail: string): Promise<void>
 	removeFavorite(drugName: string, userEmail: string): Promise<void>
 	isFavorite(drugName: string, userEmail: string): Promise<boolean>
+
+	addAllowedTeacher(teacherEmail: string): Promise<void>
+	removeAllowedTeacher(teacherEmail: string): Promise<void>
+
+	checkTeacherAllowed(teacherEmail: string): Promise<boolean>
 }

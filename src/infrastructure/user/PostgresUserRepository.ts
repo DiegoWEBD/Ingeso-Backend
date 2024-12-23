@@ -76,28 +76,55 @@ export default class PostgresUserRepository implements UserRepository {
 	}
 
 	async addFavorite(drugName: string, userEmail: string): Promise<void> {
-        const query = `
+		const query = `
             INSERT INTO favorite_drug (drug_name, user_institutional_email)
             VALUES ($1, $2)
             ON CONFLICT DO NOTHING
-        `;
-        await this.database.execute(query, [drugName, userEmail]);
-    }
+        `
+		await this.database.execute(query, [drugName, userEmail])
+	}
 
-    async removeFavorite(drugName: string, userEmail: string): Promise<void> {
-        const query = `
+	async removeFavorite(drugName: string, userEmail: string): Promise<void> {
+		const query = `
             DELETE FROM favorite_drug
             WHERE drug_name = $1 AND user_institutional_email = $2
-        `;
-        await this.database.execute(query, [drugName, userEmail]);
-    }
+        `
+		await this.database.execute(query, [drugName, userEmail])
+	}
 
-    async isFavorite(drugName: string, userEmail: string): Promise<boolean> {
-        const query = `
+	async isFavorite(drugName: string, userEmail: string): Promise<boolean> {
+		const query = `
             SELECT 1 FROM favorite_drug
             WHERE drug_name = $1 AND user_institutional_email = $2
-        `;
-        const result = await this.database.queryOne(query, [drugName, userEmail]);
-        return result.rowCount > 0;
-    }
+        `
+		const result = await this.database.queryOne(query, [drugName, userEmail])
+		return result.rowCount > 0
+	}
+
+	async addAllowedTeacher(teacherEmail: string): Promise<void> {
+		const query = `
+			INSERT INTO allowed_teacher (institutional_email)
+			VALUES ($1)
+			ON CONFLICT DO NOTHING
+		`
+		await this.database.execute(query, [teacherEmail])
+	}
+
+	async removeAllowedTeacher(teacherEmail: string): Promise<void> {
+		const query = `
+			DELETE FROM allowed_teacher
+			WHERE institutional_email = $1
+		`
+		await this.database.execute(query, [teacherEmail])
+	}
+
+	async checkTeacherAllowed(teacherEmail: string): Promise<boolean> {
+		const query = `
+			SELECT 1 FROM allowed_teacher
+			WHERE institutional_email = $1
+		`
+		const result = await this.database.queryOne(query, [teacherEmail])
+		//console.log('Resultado de checkTeacherAllowed:', result)
+		return result !== null
+	}
 }

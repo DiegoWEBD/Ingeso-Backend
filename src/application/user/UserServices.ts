@@ -11,6 +11,8 @@ import { makeRegisterStudent } from './use_cases/register_student'
 import { makeRegisterTeacher } from './use_cases/register_teacher'
 import { makeVerifyUserRefreshToken } from './use_cases/verify_user_refresh_token'
 
+import createHttpError from 'http-errors'
+
 export default class UserServices implements IUserServices {
 	constructor(private userRepository: UserRepository) {}
 
@@ -28,8 +30,9 @@ export default class UserServices implements IUserServices {
 		this.userRepository
 	)
 
-	findUser: (institutionalEmail: string) => Promise<User | null> =
-		makeFindUser(this.userRepository)
+	findUser: (institutionalEmail: string) => Promise<User | null> = makeFindUser(
+		this.userRepository
+	)
 
 	verifyUserRefreshToken: (
 		institutionalEmail: string,
@@ -49,6 +52,28 @@ export default class UserServices implements IUserServices {
 
 	async isFavorite(drugName: string, userEmail: string): Promise<boolean> {
 		return await this.userRepository.isFavorite(drugName, userEmail)
+	}
+
+	async addAllowedTeacher(teacherEmail: string): Promise<void> {
+		const alreadyAllowed = await this.userRepository.checkTeacherAllowed(
+			teacherEmail
+		)
+		if (alreadyAllowed) {
+			// Docente ya está en la tabla => error 409
+			console.log('El correo ya posee permisos')
+			throw createHttpError(409, 'El correo ya posee permisos')
+		}
+		// Si NO está, agregarlo
+		console.log('Agregando correo a la tabla')
+		await this.userRepository.addAllowedTeacher(teacherEmail)
+	}
+
+	async removeAllowedTeacher(teacherEmail: string): Promise<void> {
+		await this.userRepository.removeAllowedTeacher(teacherEmail)
+	}
+
+	async checkTeacherAllowed(teacherEmail: string): Promise<boolean> {
+		return await this.userRepository.checkTeacherAllowed(teacherEmail)
 	}
 
 	generateUserRefreshToken: (institutionalEmail: string) => Promise<string> =

@@ -7,6 +7,7 @@ import { makeGoogleAuthenticationRouter } from './google_auth/google_authenticat
 import { makeUserRouter } from './user/user_router'
 import { makeRefreshTokenRouter } from './auth/authentication/refresh_token_router'
 import { makeFavoritesRouter } from './drug/favorites_router'
+import { makeAllowedTeacherRouter } from './teacher/teacher_router'
 
 export default class Api {
 	private app: Express
@@ -46,9 +47,7 @@ export default class Api {
 
 		this.app.use(
 			'/api/auth',
-			makeGoogleAuthenticationRouter(
-				this.applicationServices.getUserServices()
-			)
+			makeGoogleAuthenticationRouter(this.applicationServices.getUserServices())
 		)
 
 		this.app.use(
@@ -72,6 +71,12 @@ export default class Api {
 			'/api/favorites',
 			authenticationMiddleware,
 			makeFavoritesRouter(this.applicationServices.getUserServices())
+		)
+
+		this.app.use(
+			'/api/allowed_teacher',
+			authenticationMiddleware,
+			makeAllowedTeacherRouter(this.applicationServices.getUserServices())
 		)
 
 		this.app.listen(port, () => {
