@@ -1,16 +1,15 @@
 import { Router } from 'express'
-import IDrugServices from '../../application/drug/IDrugServices'
-import { teacherAuthorizationMiddleware } from '../auth/authorization/teacher_authorization_middleware'
-import { makeController } from '../http/controller'
-import RequestHandler from '../http/request_handler'
-import { makeDrugRequestHandler } from './request_handler/drug_request_handler'
+import fs from 'fs'
 import multer from 'multer'
 import path from 'path'
 import XLSX from 'xlsx'
-import fs from 'fs'
-import RequestWithUser from '../http/types/RequestWithUser'
-import User from '../../domain/user/User'
+import IDrugServices from '../../application/drug/IDrugServices'
 import UnauthorizedError from '../../application/errors/unauthorized'
+import { teacherAuthorizationMiddleware } from '../auth/authorization/teacher_authorization_middleware'
+import { makeController } from '../http/controller'
+import RequestHandler from '../http/request_handler'
+import RequestWithUser from '../http/types/RequestWithUser'
+import { makeDrugRequestHandler } from './request_handler/drug_request_handler'
 
 const readDataFromExcel = (filePath: string) => {
 	const readExcel = () => {
@@ -70,6 +69,10 @@ const loadDataToDatabase = async (data: any, drugServices: IDrugServices) => {
 		row.administrationProcedures.forEach((ap: any) =>
 			administrationProceduresMap.set(ap.method, ap.procedure)
 		)
+
+		const existingDrug = await drugServices.findDrug(row.name)
+
+		if (existingDrug) continue
 
 		await drugServices.registerDrug(
 			row.name,
