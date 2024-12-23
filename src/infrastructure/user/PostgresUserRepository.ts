@@ -112,6 +112,7 @@ export default class PostgresUserRepository implements UserRepository {
 			VALUES ($1)
 			ON CONFLICT DO NOTHING
 		`
+
 		await this.database.execute(query, [teacherEmail])
 	}
 

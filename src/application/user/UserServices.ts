@@ -30,9 +30,8 @@ export default class UserServices implements IUserServices {
 		this.userRepository
 	)
 
-	findUser: (institutionalEmail: string) => Promise<User | null> = makeFindUser(
-		this.userRepository
-	)
+	findUser: (institutionalEmail: string) => Promise<User | null> =
+		makeFindUser(this.userRepository)
 
 	verifyUserRefreshToken: (
 		institutionalEmail: string,

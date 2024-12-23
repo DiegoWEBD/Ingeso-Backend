@@ -15,6 +15,9 @@ export const makeAllowedTeacherRouter = (
 				const teacherEmail = req.body.teacherEmail
 
 				await userServices.addAllowedTeacher(teacherEmail)
+				res.status(201).json({
+					message: `Permiso otorgado a docente ${teacherEmail}.`,
+				})
 			} catch (error) {
 				next(error)
 			}

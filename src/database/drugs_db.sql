@@ -54,7 +54,7 @@ create table if not exists refresh_token(
 
 create table if not exists allowed_teacher (
     institutional_email text primary key
-        references teacher(institutional_email)
-        on delete cascade,
+    references teacher(institutional_email)
+    on delete cascade,
     date_added timestamp not null default now()
 );

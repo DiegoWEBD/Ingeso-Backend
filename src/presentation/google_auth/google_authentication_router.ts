@@ -12,7 +12,7 @@ export const makeGoogleAuthenticationRouter = (
 	const authenticationController: Controller = makeController(requestHandler)
 	const router = Router()
 
-	router.all('/', authenticationController)
+	router.post('/', authenticationController)
 
 	return router
 }
