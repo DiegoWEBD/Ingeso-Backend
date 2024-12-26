@@ -132,6 +132,8 @@ export default class PostgresUserRepository implements UserRepository {
 	}
 
 	async checkTeacherAllowed(teacherEmail: string): Promise<boolean> {
+		if (teacherEmail === process.env.ADMIN_EMAIL) return true
+
 		const query = `
 			SELECT 1 FROM allowed_teacher
 			WHERE institutional_email = $1
