@@ -1,4 +1,3 @@
-import UnauthorizedError from '../../application/errors/unauthorized'
 import IUserServices from '../../application/user/IUserServices'
 import HttpError from '../http/http_error'
 import { HttpResponse, makeHttpResponse } from '../http/http_response'
