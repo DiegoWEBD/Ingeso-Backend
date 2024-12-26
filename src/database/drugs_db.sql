@@ -9,9 +9,18 @@ create table if not exists student(
     on delete cascade
 );
 
+create table if not exists allowed_teacher (
+    institutional_email text primary key,
+    date_added timestamp not null default now()
+);
+
 create table if not exists teacher(
     institutional_email text primary key 
     references app_user(institutional_email)
+    on delete cascade,
+    constraint fk_allowed_teacher
+    foreign key (institutional_email)
+    references allowed_teacher(institutional_email)
     on delete cascade
 );
 
@@ -50,11 +59,4 @@ create table if not exists refresh_token(
     on delete cascade,
     token text not null unique,
     expires_at timestamp not null
-);
-
-create table if not exists allowed_teacher (
-    institutional_email text primary key
-    references teacher(institutional_email)
-    on delete cascade,
-    date_added timestamp not null default now()
 );

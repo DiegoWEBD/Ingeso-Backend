@@ -77,6 +77,13 @@ export default class PostgresUserRepository implements UserRepository {
 		)
 	}
 
+	async delete(user: User): Promise<void> {
+		await this.database.execute(
+			'delete from app_user where institutional_email = $1',
+			[user.getInstitutionalEmail()]
+		)
+	}
+
 	async addFavorite(drugName: string, userEmail: string): Promise<void> {
 		const query = `
             INSERT INTO favorite_drug (drug_name, user_institutional_email)
@@ -130,7 +137,6 @@ export default class PostgresUserRepository implements UserRepository {
 			WHERE institutional_email = $1
 		`
 		const result = await this.database.queryOne(query, [teacherEmail])
-		//console.log('Resultado de checkTeacherAllowed:', result)
 		return result !== null
 	}
 }

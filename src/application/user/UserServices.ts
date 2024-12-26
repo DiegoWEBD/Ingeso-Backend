@@ -2,6 +2,7 @@ import { Student } from '../../domain/student/Student'
 import Teacher from '../../domain/teacher/Teacher'
 import User from '../../domain/user/User'
 import UserRepository from '../../domain/user/UserRepository'
+import HttpError from '../../presentation/http/http_error'
 import IUserServices from './IUserServices'
 import { makeFindUser } from './use_cases/find_user'
 import { makeGenerateUserRefreshToken } from './use_cases/generate_user_refresh_token'
@@ -59,15 +60,18 @@ export default class UserServices implements IUserServices {
 		)
 		if (alreadyAllowed) {
 			// Docente ya está en la tabla => error 409
-			console.log('El correo ya posee permisos')
-			throw createHttpError(409, 'El correo ya posee permisos')
+			throw new HttpError(409, 'El correo ya posee permisos')
 		}
 		// Si NO está, agregarlo
-		console.log('Agregando correo a la tabla')
 		await this.userRepository.addAllowedTeacher(teacherEmail)
 	}
 
 	async removeAllowedTeacher(teacherEmail: string): Promise<void> {
+		const registeredTeacher = await this.findUser(teacherEmail)
+
+		if (registeredTeacher)
+			await this.userRepository.delete(registeredTeacher)
+
 		await this.userRepository.removeAllowedTeacher(teacherEmail)
 	}
 
